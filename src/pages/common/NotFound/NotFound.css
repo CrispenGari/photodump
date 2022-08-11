@@ -17,6 +17,9 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  border: 1px solid #f2f2f2;
+  background-color: white;
+  border-radius: 5px;
 }
 .not__found__card__icon {
   color: var(--color-green);
@@ -68,5 +71,12 @@
   }
   to {
     top: -10px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  /* iPads, Tablets */
+  .not__found__card {
+    border: none !important;
   }
 }

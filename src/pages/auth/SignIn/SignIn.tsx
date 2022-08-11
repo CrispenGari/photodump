@@ -81,14 +81,14 @@ class SignIn extends React.Component<PropsType, StateType> {
     } = this;
     return (
       <div className="sign__in">
-        <Card className="sign__in__card">
-          <Card.Content className="sign__in__card__content">
+        <div className="sign__in__card">
+          <div className="sign__in__card__content">
             <Image floated="right" size="mini" src="/logo512.png" />
-            <Card.Header>Sign In</Card.Header>
-            <Card.Description>
-              If you have an account you can <strong>Sign In</strong>
-            </Card.Description>
-          </Card.Content>
+            <h1>Sign In</h1>
+            <p>
+              If you have an account you can <strong>Sign In</strong>.
+            </p>
+          </div>
           <Form
             loading={loading}
             className={"sign__in__form"}
@@ -133,9 +133,9 @@ class SignIn extends React.Component<PropsType, StateType> {
           </Form>
           <Card.Description>
             If you don't an account you can{" "}
-            <Link to={"/auth/sign-up"}>Sign Up</Link>
+            <Link to={"/auth/sign-up"}>Sign Up</Link>.
           </Card.Description>
-        </Card>
+        </div>
       </div>
     );
   }

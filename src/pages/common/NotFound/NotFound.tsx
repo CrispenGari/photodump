@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Card, Icon } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import { withRouter } from "../../../hoc";
 import { RouterType } from "../../../types";
 import "./NotFound.css";
@@ -21,7 +21,7 @@ class NotFound extends React.Component<PropsType, StateType> {
     } = this;
     return (
       <div className="not__found">
-        <Card className="not__found__card">
+        <div className="not__found__card">
           <h1>
             <span>4</span>
             <span>0</span>
@@ -39,7 +39,7 @@ class NotFound extends React.Component<PropsType, StateType> {
             <Link to={"/auth/sign-up"}>Sign Up</Link>
             <Link to={"/auth/sign-in"}>Sign In</Link>
           </div>
-        </Card>
+        </div>
       </div>
     );
   }

@@ -2,15 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  Button,
-  Card,
-  Form,
-  Icon,
-  Input,
-  Image,
-  Message,
-} from "semantic-ui-react";
+import { Button, Form, Icon, Input, Image, Message } from "semantic-ui-react";
 import { auth, db } from "../../../firebase";
 import { withRouter } from "../../../hoc";
 import { ErrorType, RouterType } from "../../../types";
@@ -104,14 +96,14 @@ class SignUp extends React.Component<PropsType, StateType> {
     console.log(this.state);
     return (
       <div className="sign__up">
-        <Card className="sign__up__card">
-          <Card.Content className="sign__up__card__content">
+        <div className="sign__up__card">
+          <div className="sign__up__card__content">
             <Image floated="right" size="mini" src="/logo512.png" />
-            <Card.Header>Sign Up</Card.Header>
-            <Card.Description>
-              If you have an account you can <strong>Sign In</strong>
-            </Card.Description>
-          </Card.Content>
+            <h1>Sign Up</h1>
+            <p>
+              If you have an account you can <strong>Sign In</strong>.
+            </p>
+          </div>
           <Form
             loading={false}
             className={"sign__up__form"}
@@ -165,11 +157,11 @@ class SignUp extends React.Component<PropsType, StateType> {
             </Button>
           </Form>
 
-          <Card.Description>
+          <p>
             Already have an account you can{" "}
-            <Link to={"/auth/sign-in"}>Sign In</Link>
-          </Card.Description>
-        </Card>
+            <Link to={"/auth/sign-in"}>Sign In</Link>.
+          </p>
+        </div>
       </div>
     );
   }

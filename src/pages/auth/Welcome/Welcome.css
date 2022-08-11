@@ -13,6 +13,9 @@
   max-width: 400px !important;
   user-select: none !important;
   user-zoom: none !important;
+  border: 1px solid #f2f2f2;
+  border-radius: 5px;
+  background-color: white;
 }
 
 .welcome__card__content {
@@ -20,4 +23,14 @@
   flex-direction: column !important;
   justify-content: center !important;
   align-items: center !important;
+  margin-bottom: 30px !important;
+}
+.welcome__card__content > h1 {
+  font-size: 1.5rem;
+}
+@media only screen and (max-width: 768px) {
+  /* iPads, Tablets */
+  .welcome__card {
+    border: none !important;
+  }
 }

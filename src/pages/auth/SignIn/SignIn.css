@@ -10,6 +10,9 @@
   padding: 20px !important;
   width: 100% !important;
   max-width: 400px !important;
+  border: 1px solid #f2f2f2;
+  border-radius: 5px;
+  background-color: white;
 }
 .sign__in__forgot__password {
   display: flex;
@@ -25,7 +28,17 @@
   flex-direction: column !important;
   justify-content: center !important;
   align-items: center !important;
+  margin-bottom: 30px !important;
+}
+.sign__in__card__content > h1 {
+  font-size: 1.5rem;
 }
 .sign__in__form__input {
-  margin-bottom: 10px;
+  margin: 10px 0;
+}
+@media only screen and (max-width: 768px) {
+  /* iPads, Tablets */
+  .sign__in__card {
+    border: none !important;
+  }
 }
