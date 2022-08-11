@@ -1,0 +1,24 @@
+.header__button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 5px;
+  cursor: pointer;
+  padding: 20px;
+  justify-content: center;
+  transition: all 1s;
+}
+
+.header__button:hover {
+  background-color: var(--color-green);
+}
+.header__button > p {
+  color: white;
+  font-size: 0.8rem;
+  margin-top: 3px;
+}
+
+.header__button__icon {
+  color: white !important;
+  font-size: 3rem;
+}

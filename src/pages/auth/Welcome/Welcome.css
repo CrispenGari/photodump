@@ -1,0 +1,23 @@
+.welcome {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome__card {
+  padding: 20px !important;
+  width: 100% !important;
+  max-width: 400px !important;
+  user-select: none !important;
+  user-zoom: none !important;
+}
+
+.welcome__card__content {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+}

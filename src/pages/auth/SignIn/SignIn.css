@@ -1,0 +1,31 @@
+.sign__in {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.sign__in__card {
+  padding: 20px !important;
+  width: 100% !important;
+  max-width: 400px !important;
+}
+.sign__in__forgot__password {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.sign__in__form {
+  margin-bottom: 10px;
+}
+.sign__in__card__content {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.sign__in__form__input {
+  margin-bottom: 10px;
+}

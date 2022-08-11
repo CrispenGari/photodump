@@ -1,0 +1,35 @@
+.app__header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 0px 20px;
+  background-color: var(--header-color);
+  justify-content: space-between;
+  position: sticky;
+  z-index: 10;
+  align-items: center;
+  top: 0;
+}
+.app__header__left > a {
+  color: white;
+  font-size: 1.3rem;
+}
+.app__header__left > div {
+  display: none;
+}
+.app__header__right {
+  display: flex;
+}
+
+@media only screen and (max-width: 768px) {
+  /* iPads, Tablets */
+  .app__header {
+    justify-content: center;
+  }
+  .app__header__left > div {
+    display: flex !important;
+  }
+  .app__header__left > a {
+    display: none !important;
+  }
+}

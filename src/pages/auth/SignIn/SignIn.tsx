@@ -1,0 +1,144 @@
+import { signInWithEmailAndPassword } from "firebase/auth";
+import React from "react";
+import { Link } from "react-router-dom";
+import {
+  Button,
+  Card,
+  Form,
+  Input,
+  Icon,
+  Image,
+  Message,
+} from "semantic-ui-react";
+import { auth } from "../../../firebase";
+import { withRouter } from "../../../hoc";
+import { ErrorType, RouterType } from "../../../types";
+
+import "./SignIn.css";
+interface PropsType {
+  router: RouterType;
+}
+interface StateType {
+  email?: string;
+  password?: string;
+  error?: ErrorType;
+  loading?: true | false;
+}
+class SignIn extends React.Component<PropsType, StateType> {
+  constructor(props: PropsType) {
+    super(props);
+    this.state = {
+      loading: false,
+    };
+  }
+
+  onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    this.setState((state) => ({
+      ...state,
+      loading: true,
+    }));
+    const { password, email } = this.state;
+    await signInWithEmailAndPassword(
+      auth,
+      email ? email.trim().toLowerCase() : "",
+      password ? password.trim() : ""
+    )
+      .then(async ({ user }) => {
+        this.setState((state) => ({
+          ...state,
+          password: "",
+          email: "",
+          error: undefined,
+          loading: false,
+        }));
+        await this.props.router.navigate("/");
+      })
+      .catch((error) => {
+        this.setState((state) => ({
+          ...state,
+          password: "",
+          loading: false,
+          error: {
+            field: "email",
+            value: "Invalid credentials.",
+          },
+        }));
+      });
+  };
+  onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+    this.setState((state) => ({
+      ...state,
+      [name]: value,
+    }));
+  };
+  render() {
+    const {
+      state: { loading, email, password, error },
+      onChange,
+      onSubmit,
+    } = this;
+    return (
+      <div className="sign__in">
+        <Card className="sign__in__card">
+          <Card.Content className="sign__in__card__content">
+            <Image floated="right" size="mini" src="/logo512.png" />
+            <Card.Header>Sign In</Card.Header>
+            <Card.Description>
+              If you have an account you can <strong>Sign In</strong>
+            </Card.Description>
+          </Card.Content>
+          <Form
+            loading={loading}
+            className={"sign__in__form"}
+            onSubmit={onSubmit}
+          >
+            <Input
+              iconPosition="left"
+              type={"email"}
+              placeholder="email@domain.com"
+              name="email"
+              value={email}
+              error={error?.field === "email"}
+              onChange={onChange}
+              icon={<Icon name="at" />}
+              className="sign__in__form__input"
+              fluid
+            />
+
+            <Input
+              iconPosition="left"
+              fluid
+              type={"password"}
+              placeholder="password"
+              icon={<Icon name="lock" />}
+              name="password"
+              value={password}
+              error={error?.field === "password"}
+              onChange={onChange}
+              className="sign__in__form__input"
+            />
+            <div className="sign__in__forgot__password">
+              <Link to={"/auth/forgot-password"}>Forgot Password?</Link>
+            </div>
+            {error?.value && (
+              <Message negative>
+                <p>{error ? error.value : ""}</p>
+              </Message>
+            )}
+            <Button color="green" fluid>
+              Sign In
+            </Button>
+          </Form>
+          <Card.Description>
+            If you don't an account you can{" "}
+            <Link to={"/auth/sign-up"}>Sign Up</Link>
+          </Card.Description>
+        </Card>
+      </div>
+    );
+  }
+}
+
+export default withRouter(SignIn);

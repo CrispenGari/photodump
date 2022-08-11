@@ -1,0 +1,33 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  flex-direction: column;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+@media only screen and (max-width: 480px) {
+  /* Mobile devices. */
+  body {
+    background-color: var(--color-white);
+  }
+}
+@media only screen and (max-width: 768px) {
+  /* iPads, Tablets */
+  .app {
+    background-color: var(--color-white) !important;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  /* Small screens, laptops */
+}
+@media only screen and (max-width: 1200px) {
+  /*Desktops, large screens. */
+}
+@media only screen and (max-width: 1201px) {
+  /* Extra large screens, TV.. */
+}

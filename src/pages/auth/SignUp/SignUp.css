@@ -1,0 +1,28 @@
+.sign__up {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.sign__up__card {
+  padding: 20px !important;
+  width: 100% !important;
+  max-width: 400px !important;
+  user-select: none !important;
+  user-zoom: none !important;
+}
+.sign__up__form {
+  margin-bottom: 10px;
+}
+
+.sign__up__card__content {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.sign__up__form__input {
+  margin-bottom: 10px;
+}
