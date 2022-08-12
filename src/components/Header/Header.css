@@ -6,7 +6,7 @@
   background-color: var(--header-color);
   justify-content: space-between;
   position: sticky;
-  z-index: 10;
+  z-index: 20;
   align-items: center;
   top: 0;
 }

@@ -1,0 +1,47 @@
+.recent__item {
+  padding: 5px;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 5px;
+  justify-content: flex-start;
+  height: fit-content !important;
+  position: relative;
+  transition: all 1s;
+  margin: 5px 10px 5px 0px;
+}
+
+.recent__item__icon {
+  position: absolute;
+  color: white;
+  z-index: 10;
+  font-size: 1.5rem;
+  right: 10px;
+  top: 10px;
+}
+.recent__item__image {
+  width: 100%;
+  object-fit: cover !important;
+  margin-bottom: 0px !important;
+}
+.recent__item > h1 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  padding: 5px;
+  margin: 0 !important;
+  text-align: center;
+  font-weight: bold;
+}
+.recent__item > p {
+  color: gray;
+  font-size: 0.7rem;
+  margin: 0 !important;
+  display: flex;
+  justify-content: space-between;
+}
+
+.recent__item:hover {
+  transform: scale(1.09);
+  cursor: pointer;
+}

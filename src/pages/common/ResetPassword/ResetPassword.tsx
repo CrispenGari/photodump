@@ -1,26 +1,27 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, Form, Input, Icon, Image, Message } from "semantic-ui-react";
+import { Form, Input, Icon, Message, Button, Image } from "semantic-ui-react";
 import { auth } from "../../../firebase";
 import { withRouter } from "../../../hoc";
 import { ErrorType, RouterType } from "../../../types";
 
-import "./SignIn.css";
 interface PropsType {
   router: RouterType;
 }
 interface StateType {
-  email?: string;
-  password?: string;
+  email: string;
+  loading: boolean;
   error?: ErrorType;
-  loading?: true | false;
+  message?: string;
 }
-class SignIn extends React.Component<PropsType, StateType> {
+class ResetPassword extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props);
     this.state = {
+      email: "",
       loading: false,
+      message: "",
     };
   }
 
@@ -29,32 +30,29 @@ class SignIn extends React.Component<PropsType, StateType> {
     this.setState((state) => ({
       ...state,
       loading: true,
+      message: "",
+      error: undefined,
     }));
-    const { password, email } = this.state;
-    await signInWithEmailAndPassword(
-      auth,
-      email ? email.trim().toLowerCase() : "",
-      password ? password.trim() : ""
-    )
-      .then(async ({ user }) => {
+    await sendPasswordResetEmail(auth, this.state.email.toLowerCase().trim())
+      .then(() => {
         this.setState((state) => ({
           ...state,
-          password: "",
-          email: "",
-          error: undefined,
           loading: false,
+          email: "",
+          message:
+            "Your reset password link was sent to the email: " +
+            this.state.email,
         }));
-        await this.props.router.navigate("/");
       })
       .catch((error) => {
         this.setState((state) => ({
           ...state,
-          password: "",
-          loading: false,
+          message: "",
           error: {
             field: "email",
-            value: "Invalid credentials.",
+            value: "Something went wrong, make sure that the email is valid.",
           },
+          loading: false,
         }));
       });
   };
@@ -67,18 +65,22 @@ class SignIn extends React.Component<PropsType, StateType> {
   };
   render() {
     const {
-      state: { loading, email, password, error },
-      onChange,
+      state: { email, loading, error, message },
+      props: {},
       onSubmit,
+      onChange,
     } = this;
     return (
       <div className="sign__in">
         <div className="sign__in__card">
           <div className="sign__in__card__content">
             <Image floated="right" size="mini" src="/logo512.png" />
-            <h1>Sign In</h1>
+            <h1>Forgot Password</h1>
             <p>
-              If you have an account you can <strong>Sign In</strong>.
+              If you have an account and you{" "}
+              <strong>forgot your password</strong> you can reset it via{" "}
+              <strong>email</strong>. Please provide a valid{" "}
+              <strong>email</strong> address for your account.
             </p>
           </div>
           <Form
@@ -98,34 +100,23 @@ class SignIn extends React.Component<PropsType, StateType> {
               className="sign__in__form__input"
               fluid
             />
-
-            <Input
-              iconPosition="left"
-              fluid
-              type={"password"}
-              placeholder="password"
-              icon={<Icon name="lock" />}
-              name="password"
-              value={password}
-              error={error?.field === "password"}
-              onChange={onChange}
-              className="sign__in__form__input"
-            />
-            <div className="sign__in__forgot__password">
-              <Link to={"/auth/reset-password"}>Forgot Password?</Link>
-            </div>
+            {message && (
+              <Message color="green">
+                <p>{message}</p>
+              </Message>
+            )}
             {error?.value && (
               <Message negative>
                 <p>{error ? error.value : ""}</p>
               </Message>
             )}
             <Button color="green" fluid>
-              Sign In
+              Request Password Reset Email
             </Button>
           </Form>
           <p>
-            If you don't an account you can{" "}
-            <Link to={"/auth/sign-up"}>Sign Up</Link>.
+            Or you have remembered your password{" "}
+            <Link to={"/auth/sign-in"}>Sign In</Link>.
           </p>
         </div>
       </div>
@@ -133,4 +124,4 @@ class SignIn extends React.Component<PropsType, StateType> {
   }
 }
 
-export default withRouter(SignIn);
+export default withRouter(ResetPassword);

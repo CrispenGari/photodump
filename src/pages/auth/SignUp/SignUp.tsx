@@ -15,6 +15,7 @@ interface StateType {
   password?: string;
   confPassword?: string;
   error?: ErrorType;
+  loading: boolean;
 }
 class SignUp extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
@@ -23,6 +24,7 @@ class SignUp extends React.Component<PropsType, StateType> {
       password: "",
       email: "",
       confPassword: "",
+      loading: false,
     };
   }
 
@@ -30,6 +32,10 @@ class SignUp extends React.Component<PropsType, StateType> {
     e.preventDefault();
     const { password, email, confPassword } = this.state;
 
+    this.setState((state) => ({
+      ...state,
+      loading: true,
+    }));
     if (password !== confPassword) {
       this.setState((state) => ({
         ...state,
@@ -37,12 +43,14 @@ class SignUp extends React.Component<PropsType, StateType> {
           field: "confPassword",
           value: "The two password does not match.",
         },
+        loading: false,
       }));
       return;
     } else {
       this.setState((state) => ({
         ...state,
         error: undefined,
+        loading: false,
       }));
     }
 
@@ -58,6 +66,7 @@ class SignUp extends React.Component<PropsType, StateType> {
           email: "",
           confPassword: "",
           error: undefined,
+          loading: false,
         }));
         await addDoc(collection(db, "users"), {
           ...user,
@@ -69,6 +78,7 @@ class SignUp extends React.Component<PropsType, StateType> {
           ...state,
           password: "",
           confPassword: "",
+          loading: false,
           error: {
             field: (error.message as string).includes("email")
               ? "email"
@@ -91,9 +101,9 @@ class SignUp extends React.Component<PropsType, StateType> {
     const {
       onChange,
       onSubmit,
-      state: { confPassword, email, password, error },
+      state: { confPassword, email, password, error, loading },
     } = this;
-    console.log(this.state);
+
     return (
       <div className="sign__up">
         <div className="sign__up__card">
@@ -105,7 +115,7 @@ class SignUp extends React.Component<PropsType, StateType> {
             </p>
           </div>
           <Form
-            loading={false}
+            loading={loading}
             className={"sign__up__form"}
             onSubmit={onSubmit}
           >

@@ -3,6 +3,40 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 .home__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0px auto;
+}
+
+.home__button {
+  background-color: var(--header-color);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 1s;
+  position: absolute;
+  z-index: 10;
+  bottom: 30px;
+  left: 20px;
+}
+.home__button__icon {
+  color: white;
+  font-size: 2rem;
+}
+
+.home__button:hover {
+  background-color: var(--color-green);
 }
