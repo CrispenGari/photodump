@@ -23,3 +23,10 @@
   align-items: flex-start;
   flex-wrap: wrap;
 }
+
+@media only screen and (max-width: 768px) {
+  /* iPads, Tablets */
+  .recents__container {
+    justify-content: space-evenly;
+  }
+}

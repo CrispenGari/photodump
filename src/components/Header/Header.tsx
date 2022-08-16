@@ -2,12 +2,12 @@ import { signOut } from "firebase/auth";
 import React from "react";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase";
-import { withRouter } from "../../hoc";
-import { RouterType } from "../../types";
+import { withGlobalProps } from "../../hoc";
+import { GlobalPropsType } from "../../types";
 import HeaderButton from "../HeaderButton/HeaderButton";
 import "./Header.css";
 interface PropsType {
-  router: RouterType;
+  globalProps: GlobalPropsType;
 }
 interface StateType {}
 class Header extends React.Component<PropsType, StateType> {
@@ -18,7 +18,7 @@ class Header extends React.Component<PropsType, StateType> {
 
   render() {
     const {
-      props: { router },
+      props: { globalProps },
     } = this;
     return (
       <div className="app__header">
@@ -29,7 +29,7 @@ class Header extends React.Component<PropsType, StateType> {
               iconName="home"
               title="home"
               onClick={() => {
-                router.navigate("/");
+                globalProps.navigate("/");
               }}
             />
           </div>
@@ -40,7 +40,7 @@ class Header extends React.Component<PropsType, StateType> {
             title="sign out"
             onClick={async () => {
               await signOut(auth);
-              await router.navigate("/");
+              await globalProps.navigate("/");
             }}
           />
           <HeaderButton
@@ -55,4 +55,4 @@ class Header extends React.Component<PropsType, StateType> {
   }
 }
 
-export default withRouter(Header);
+export default withGlobalProps(Header);

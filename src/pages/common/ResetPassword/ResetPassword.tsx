@@ -3,11 +3,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Form, Input, Icon, Message, Button, Image } from "semantic-ui-react";
 import { auth } from "../../../firebase";
-import { withRouter } from "../../../hoc";
-import { ErrorType, RouterType } from "../../../types";
+import { withGlobalProps } from "../../../hoc";
+import { ErrorType, GlobalPropsType } from "../../../types";
 
 interface PropsType {
-  router: RouterType;
+  globalProps: GlobalPropsType;
 }
 interface StateType {
   email: string;
@@ -124,4 +124,4 @@ class ResetPassword extends React.Component<PropsType, StateType> {
   }
 }
 
-export default withRouter(ResetPassword);
+export default withGlobalProps(ResetPassword);

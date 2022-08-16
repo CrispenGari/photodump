@@ -1,10 +1,10 @@
 import React from "react";
 import { Button, Image } from "semantic-ui-react";
-import { withRouter } from "../../../hoc";
-import { RouterType } from "../../../types";
+import { withGlobalProps } from "../../../hoc";
+import { GlobalPropsType } from "../../../types";
 import "./Welcome.css";
 interface PropsType {
-  router: RouterType;
+  globalProps: GlobalPropsType;
 }
 interface StateType {}
 class Welcome extends React.Component<PropsType, StateType> {
@@ -14,9 +14,9 @@ class Welcome extends React.Component<PropsType, StateType> {
   }
 
   render() {
-    const {
-      router: { navigate },
-    } = this.props;
+    const { globalProps } = this.props;
+
+    console.log(globalProps);
     return (
       <div className="welcome">
         <div className="welcome__card">
@@ -35,7 +35,7 @@ class Welcome extends React.Component<PropsType, StateType> {
                 basic
                 color="blue"
                 onClick={() =>
-                  navigate({
+                  globalProps.navigate({
                     pathname: "/auth/sign-in",
                   })
                 }
@@ -50,4 +50,4 @@ class Welcome extends React.Component<PropsType, StateType> {
   }
 }
 
-export default withRouter(Welcome);
+export default withGlobalProps(Welcome);

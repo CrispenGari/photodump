@@ -3,13 +3,13 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  position: relative;
+  position: relative !important;
+  overflow-x: hidden;
 }
 .home__main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  position: relative;
   width: 100%;
   max-width: 1000px;
   margin: 0px auto;
@@ -27,10 +27,10 @@
   border-radius: 50%;
   cursor: pointer;
   transition: all 1s;
-  position: absolute;
+  position: sticky;
   z-index: 10;
-  bottom: 30px;
-  left: 20px;
+  top: 30px !important;
+  left: 25px;
 }
 .home__button__icon {
   color: white;

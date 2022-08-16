@@ -28,8 +28,6 @@ export const App = () => {
       unsubscribe();
     };
   }, [dispatch, navigate]);
-
-  console.log(user);
   return (
     <div className="app">
       <Routes user={user} />

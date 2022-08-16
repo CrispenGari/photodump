@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Icon } from "semantic-ui-react";
-import { withRouter } from "../../../hoc";
-import { RouterType } from "../../../types";
+import { withGlobalProps } from "../../../hoc";
+import { GlobalPropsType } from "../../../types";
 import "./NotFound.css";
 interface PropsType {
-  router: RouterType;
+  globalProps: GlobalPropsType;
 }
 interface StateType {}
 class NotFound extends React.Component<PropsType, StateType> {
@@ -16,7 +16,7 @@ class NotFound extends React.Component<PropsType, StateType> {
   render() {
     const {
       props: {
-        router: { location },
+        globalProps: { location },
       },
     } = this;
     return (
@@ -45,4 +45,4 @@ class NotFound extends React.Component<PropsType, StateType> {
   }
 }
 
-export default withRouter(NotFound);
+export default withGlobalProps(NotFound);

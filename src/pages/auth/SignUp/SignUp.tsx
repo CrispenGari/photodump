@@ -4,11 +4,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Form, Icon, Input, Image, Message } from "semantic-ui-react";
 import { auth, db } from "../../../firebase";
-import { withRouter } from "../../../hoc";
-import { ErrorType, RouterType } from "../../../types";
+import { withGlobalProps } from "../../../hoc";
+import { ErrorType, GlobalPropsType } from "../../../types";
 import "./SignUp.css";
 interface PropsType {
-  router: RouterType;
+  globalProps: GlobalPropsType;
 }
 interface StateType {
   email?: string;
@@ -71,7 +71,7 @@ class SignUp extends React.Component<PropsType, StateType> {
         await addDoc(collection(db, "users"), {
           ...user,
         });
-        await this.props.router.navigate("/");
+        await this.props.globalProps.navigate("/");
       })
       .catch((error) => {
         this.setState((state) => ({
@@ -177,4 +177,4 @@ class SignUp extends React.Component<PropsType, StateType> {
   }
 }
 
-export default withRouter(SignUp);
+export default withGlobalProps(SignUp);

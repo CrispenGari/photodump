@@ -1,7 +1,7 @@
 import React from "react";
 import { MdOutlineFavorite } from "react-icons/md";
 import { Image } from "semantic-ui-react";
-import { withRouter } from "../../hoc";
+import { withGlobalProps } from "../../hoc";
 import "./RecentItem.css";
 interface PropsType {}
 interface StateType {}
@@ -25,4 +25,4 @@ class RecentItem extends React.Component<PropsType, StateType> {
   }
 }
 
-export default withRouter(RecentItem);
+export default withGlobalProps(RecentItem);

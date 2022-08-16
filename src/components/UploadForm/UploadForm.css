@@ -1,0 +1,67 @@
+.upload__form {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100 !important;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  flex-direction: column;
+}
+.upload__form > form {
+  background-color: white;
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+.upload__form > form > h1 {
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 5px;
+  font-size: 1rem;
+  text-align: center;
+}
+.upload__form > form > label {
+  width: 100%;
+  height: 100%;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px auto;
+  border: 2px dashed lightgray;
+  border-radius: 5px;
+}
+.upload__form > form > label > svg {
+  display: none !important;
+}
+.upload__form > form > label > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex: 1;
+}
+.upload__form > form > label > div > span:last-of-type {
+  display: none;
+}
+
+.upload__form__controls {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+.upload__form__controls > button:first-of-type {
+  margin-right: 10px !important;
+}
+.upload__form > form > p {
+  color: gray;
+  text-align: center;
+  font-size: 0.9rem;
+}

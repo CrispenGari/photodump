@@ -1,12 +1,12 @@
 import React from "react";
 import { Icon } from "semantic-ui-react";
-import { withRouter } from "../../hoc";
-import { RouterType } from "../../types";
+import { withGlobalProps } from "../../hoc";
+import { GlobalPropsType } from "../../types";
 import "./HeaderButton.css";
 
 interface PropsType {
   iconName: string;
-  router: RouterType;
+  globalProps: GlobalPropsType;
   title: string;
   onClick: () => void;
 }
@@ -29,4 +29,4 @@ class HeaderButton extends React.Component<PropsType, StateType> {
   }
 }
 
-export default withRouter(HeaderButton);
+export default withGlobalProps(HeaderButton);

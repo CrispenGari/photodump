@@ -3,12 +3,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Form, Input, Icon, Image, Message } from "semantic-ui-react";
 import { auth } from "../../../firebase";
-import { withRouter } from "../../../hoc";
-import { ErrorType, RouterType } from "../../../types";
+import { withGlobalProps } from "../../../hoc";
+import { ErrorType, GlobalPropsType } from "../../../types";
 
 import "./SignIn.css";
 interface PropsType {
-  router: RouterType;
+  globalProps: GlobalPropsType;
 }
 interface StateType {
   email?: string;
@@ -44,7 +44,7 @@ class SignIn extends React.Component<PropsType, StateType> {
           error: undefined,
           loading: false,
         }));
-        await this.props.router.navigate("/");
+        await this.props.globalProps.navigate("/");
       })
       .catch((error) => {
         this.setState((state) => ({
@@ -133,4 +133,4 @@ class SignIn extends React.Component<PropsType, StateType> {
   }
 }
 
-export default withRouter(SignIn);
+export default withGlobalProps(SignIn);
