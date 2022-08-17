@@ -22,6 +22,7 @@ class NotFound extends React.Component<PropsType, StateType> {
     return (
       <div className="not__found">
         <div className="not__found__card">
+          <img alt="logo" src="/logo.png" />
           <h1>
             <span>4</span>
             <span>0</span>

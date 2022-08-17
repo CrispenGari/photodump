@@ -9,10 +9,15 @@
   z-index: 20;
   align-items: center;
   top: 0;
+  user-select: none;
+  -webkit-user-drag: none;
 }
-.app__header__left > a {
-  color: white;
-  font-size: 1.3rem;
+.app__header__left > img {
+  -webkit-user-drag: none;
+  user-select: none;
+  user-zoom: none;
+  width: 50px;
+  cursor: pointer;
 }
 .app__header__left > div {
   display: none;
@@ -29,7 +34,14 @@
   .app__header__left > div {
     display: flex !important;
   }
-  .app__header__left > a {
+  .app__header__left > img {
     display: none !important;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  /* iPads, Tablets */
+  .app__header {
+    padding: 0px 10px;
   }
 }

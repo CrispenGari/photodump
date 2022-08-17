@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes as R, Route } from "react-router-dom";
-import { Home } from "../pages/app";
+import { Home, Profile, Settings } from "../pages/app";
 import { SignIn, SignUp, Welcome } from "../pages/auth";
 import { NotFound, ResetPassword } from "../pages/common";
 
@@ -15,6 +15,8 @@ export class Routes extends React.Component<PropsType, StateType> {
       return (
         <R>
           <Route path="/" caseSensitive element={<Home />} />
+          <Route path="/settings" caseSensitive element={<Settings />} />
+          <Route path="/profile" caseSensitive element={<Profile />} />
           <Route path="*" element={<NotFound />} caseSensitive />
         </R>
       );

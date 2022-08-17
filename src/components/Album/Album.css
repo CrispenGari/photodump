@@ -13,7 +13,7 @@
 }
 .album__item__icon {
   position: absolute;
-  color: white;
+  color: white !important;
   z-index: 10;
   font-size: 1.5rem;
   right: 10px;

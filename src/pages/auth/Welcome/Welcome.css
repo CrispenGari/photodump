@@ -16,6 +16,10 @@
   border: 1px solid #f2f2f2;
   border-radius: 5px;
   background-color: white;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .welcome__card__content {
@@ -27,6 +31,14 @@
 }
 .welcome__card__content > h1 {
   font-size: 1.5rem;
+}
+.welcome__card__content > img {
+  user-zoom: none;
+  -webkit-user-drag: none;
+  width: 150px;
+}
+.welcome__card__content > p {
+  color: gray;
 }
 @media only screen and (max-width: 768px) {
   /* iPads, Tablets */

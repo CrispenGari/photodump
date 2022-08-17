@@ -1,11 +1,11 @@
 import { sendPasswordResetEmail } from "firebase/auth";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Form, Input, Icon, Message, Button, Image } from "semantic-ui-react";
+import { Form, Input, Icon, Message, Button } from "semantic-ui-react";
 import { auth } from "../../../firebase";
 import { withGlobalProps } from "../../../hoc";
 import { ErrorType, GlobalPropsType } from "../../../types";
-
+import "./ResetPassword.css";
 interface PropsType {
   globalProps: GlobalPropsType;
 }
@@ -66,16 +66,15 @@ class ResetPassword extends React.Component<PropsType, StateType> {
   render() {
     const {
       state: { email, loading, error, message },
-      props: {},
       onSubmit,
       onChange,
     } = this;
     return (
-      <div className="sign__in">
-        <div className="sign__in__card">
-          <div className="sign__in__card__content">
-            <Image floated="right" size="mini" src="/logo512.png" />
-            <h1>Forgot Password</h1>
+      <div className="reset__password">
+        <div className="reset__password__card">
+          <div className="reset__password__card__content">
+            <img alt="logo" src="/logo.png" />
+            <h1>Reset Password</h1>
             <p>
               If you have an account and you{" "}
               <strong>forgot your password</strong> you can reset it via{" "}
@@ -85,7 +84,7 @@ class ResetPassword extends React.Component<PropsType, StateType> {
           </div>
           <Form
             loading={loading}
-            className={"sign__in__form"}
+            className={"reset__password__form"}
             onSubmit={onSubmit}
           >
             <Input
@@ -97,7 +96,7 @@ class ResetPassword extends React.Component<PropsType, StateType> {
               error={error?.field === "email"}
               onChange={onChange}
               icon={<Icon name="at" />}
-              className="sign__in__form__input"
+              className="reset__password__form__input"
               fluid
             />
             {message && (

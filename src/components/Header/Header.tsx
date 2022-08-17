@@ -1,6 +1,5 @@
 import { signOut } from "firebase/auth";
 import React from "react";
-import { Link } from "react-router-dom";
 import { auth } from "../../firebase";
 import { withGlobalProps } from "../../hoc";
 import { GlobalPropsType } from "../../types";
@@ -8,6 +7,7 @@ import HeaderButton from "../HeaderButton/HeaderButton";
 import "./Header.css";
 interface PropsType {
   globalProps: GlobalPropsType;
+  openModal: () => void;
 }
 interface StateType {}
 class Header extends React.Component<PropsType, StateType> {
@@ -18,37 +18,62 @@ class Header extends React.Component<PropsType, StateType> {
 
   render() {
     const {
-      props: { globalProps },
+      props: {
+        globalProps: { navigate, location },
+        openModal,
+      },
     } = this;
+
     return (
       <div className="app__header">
         <div className="app__header__left">
-          <Link to="/">Home</Link>
+          <img
+            src="/logo-white.png"
+            alt="logo"
+            onClick={() => {
+              navigate("/");
+            }}
+          />
           <div className="">
             <HeaderButton
               iconName="home"
               title="home"
               onClick={() => {
-                globalProps.navigate("/");
+                navigate("/");
               }}
             />
           </div>
         </div>
         <div className="app__header__right">
+          {location.pathname === "/" ? (
+            <HeaderButton
+              iconName="cloud upload"
+              title="upload"
+              onClick={openModal}
+            />
+          ) : null}
           <HeaderButton
             iconName="log out"
-            title="sign out"
+            title="signout"
             onClick={async () => {
               await signOut(auth);
-              await globalProps.navigate("/");
+              await navigate("/");
             }}
           />
           <HeaderButton
             iconName="settings"
             title="settings"
-            onClick={() => {}}
+            onClick={() => {
+              navigate("/settings");
+            }}
           />
-          <HeaderButton iconName="user" title="profile" onClick={() => {}} />
+          <HeaderButton
+            iconName="user"
+            title="profile"
+            onClick={() => {
+              navigate("/profile");
+            }}
+          />
         </div>
       </div>
     );

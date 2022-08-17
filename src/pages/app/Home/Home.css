@@ -5,6 +5,7 @@
   flex-direction: column;
   position: relative !important;
   overflow-x: hidden;
+  max-height: 100vh;
 }
 .home__main {
   flex: 1;
@@ -13,30 +14,4 @@
   width: 100%;
   max-width: 1000px;
   margin: 0px auto;
-}
-
-.home__button {
-  background-color: var(--header-color);
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: fit-content;
-  height: fit-content;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 1s;
-  position: sticky;
-  z-index: 10;
-  top: 30px !important;
-  left: 25px;
-}
-.home__button__icon {
-  color: white;
-  font-size: 2rem;
-}
-
-.home__button:hover {
-  background-color: var(--color-green);
 }

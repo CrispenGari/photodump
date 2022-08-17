@@ -6,7 +6,7 @@
   background-color: white;
   border-radius: 5px;
   justify-content: flex-start;
-  height: fit-content !important;
+  height: 200px !important;
   position: relative;
   transition: all 1s;
   margin: 5px 10px 5px 0px;
@@ -14,7 +14,7 @@
 
 .recent__item__icon {
   position: absolute;
-  color: white;
+  color: var(--header-color) !important;
   z-index: 10;
   font-size: 1.5rem;
   right: 10px;
@@ -24,6 +24,7 @@
   width: 100%;
   object-fit: cover !important;
   margin-bottom: 0px !important;
+  flex: 1 !important;
 }
 .recent__item > h1 {
   font-size: 0.8rem;

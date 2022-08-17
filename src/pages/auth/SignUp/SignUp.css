@@ -29,6 +29,11 @@
   align-items: center !important;
   margin-bottom: 30px !important;
 }
+.sign__up__card__content > img {
+  user-zoom: none;
+  -webkit-user-drag: none;
+  width: 150px;
+}
 .sign__up__form__input {
   margin-bottom: 10px;
 }

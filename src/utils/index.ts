@@ -9,3 +9,17 @@ export const dataURLtoFile = (dataurl: string, filename: string) => {
   }
   return new File([u8arr], filename, { type: mime });
 };
+
+export const formatTimeStamp = (timestamp: any) => {
+  const dateTime = new Date(timestamp.seconds * 1000);
+  const today = new Date().getDate();
+
+  const year = dateTime.getFullYear();
+  const date = dateTime.getDate();
+  const month = dateTime.getMonth() + 1;
+  return today === date
+    ? "today"
+    : `${date.toString().length === 2 ? date : "0" + date.toString()}/${
+        month.toString().length === 2 ? month : "0" + month.toString()
+      }/${year}`;
+};

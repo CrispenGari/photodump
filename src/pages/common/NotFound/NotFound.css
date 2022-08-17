@@ -55,7 +55,11 @@
   text-decoration: underline;
   margin-top: 20px;
 }
-
+.not__found__card > img {
+  user-zoom: none;
+  -webkit-user-drag: none;
+  width: 150px;
+}
 @keyframes search {
   from {
     left: 10px;

@@ -1,7 +1,7 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, Form, Input, Icon, Image, Message } from "semantic-ui-react";
+import { Button, Form, Input, Icon, Message } from "semantic-ui-react";
 import { auth } from "../../../firebase";
 import { withGlobalProps } from "../../../hoc";
 import { ErrorType, GlobalPropsType } from "../../../types";
@@ -75,7 +75,7 @@ class SignIn extends React.Component<PropsType, StateType> {
       <div className="sign__in">
         <div className="sign__in__card">
           <div className="sign__in__card__content">
-            <Image floated="right" size="mini" src="/logo512.png" />
+            <img alt="logo" src="/logo.png" />
             <h1>Sign In</h1>
             <p>
               If you have an account you can <strong>Sign In</strong>.

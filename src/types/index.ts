@@ -23,3 +23,17 @@ export interface ErrorType {
   field: string;
   value: string;
 }
+
+export interface RecentType {
+  displayName?: string;
+  email: string;
+  id: string;
+  phoneNumber?: string;
+  photoURL?: string;
+  timestamp: any;
+  uid: string;
+  url: string;
+}
+
+export type FavoriteType = RecentType;
+export type AllPicturesType = FavoriteType;
