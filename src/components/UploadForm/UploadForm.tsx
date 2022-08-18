@@ -1,15 +1,16 @@
 import React from "react";
 import { Button, Progress } from "semantic-ui-react";
 import { FileUploader } from "react-drag-drop-files";
-import { pick } from "lodash";
 import "./UploadForm.css";
 import { withGlobalProps } from "../../hoc";
-import { GlobalPropsType } from "../../types";
-import { storage, db, timestamp } from "../../firebase";
+import { GlobalPropsType, PhotoType } from "../../types";
+import { storage, db } from "../../firebase";
 // import { decode } from "base64-arraybuffer";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { dataURLtoFile } from "../../utils";
-import { addDoc, collection } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+
+import { v4 as uuid_v4 } from "uuid";
 interface PropsType {
   closeForm: () => void;
   globalProps: GlobalPropsType;
@@ -74,18 +75,11 @@ class UploadForm extends React.Component<PropsType, StateType> {
       },
     } = this;
     if (files.length > 0 && user) {
-      const _user = pick(user, [
-        "email",
-        "displayName",
-        "photoURL",
-        "phoneNumber",
-        "uid",
-      ]);
-
       for (let i = 0; i < files.length; i++) {
         this.setState((state) => ({ ...state, progress: true }));
         const { fileName, base64 } = files[i];
-        const storageRef = ref(storage, `images/${fileName}`);
+        const _fileName = uuid_v4().slice(0, 10) + fileName.split(".")[1];
+        const storageRef = ref(storage, `images/${_fileName}`);
         const uploadTask = uploadBytesResumable(
           storageRef,
           dataURLtoFile(base64, fileName)
@@ -102,17 +96,42 @@ class UploadForm extends React.Component<PropsType, StateType> {
             console.log(error);
           },
           () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              addDoc(collection(db, "allPictures"), {
-                ..._user,
-                url: downloadURL,
-                timestamp: timestamp,
-              });
+            getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+              const photo: PhotoType = {
+                favoured: false,
+                id: uuid_v4(),
+                timestamp: new Date(),
+                url,
+                name: _fileName,
+              };
+              const docSnap = await getDoc(doc(db, "users", user.uid));
+              const _user = {
+                id: docSnap.id,
+                data: docSnap.data(),
+              };
+
+              // previous photos
+              const _photos: PhotoType[] = _user.data?.photos;
+              await setDoc(
+                doc(db, "users", user.uid),
+                {
+                  user: user,
+                  photos: [photo, ..._photos],
+                },
+                {
+                  merge: true,
+                }
+              );
             });
           }
         );
         if (files.length === i + 1) {
-          this.setState((state) => ({ ...state, progress: false, files: [] }));
+          this.setState((state) => ({
+            ...state,
+            progress: false,
+            files: [],
+          }));
+          this.props.closeForm();
         }
       }
     }
@@ -123,6 +142,7 @@ class UploadForm extends React.Component<PropsType, StateType> {
       props: { closeForm },
       state: { progress, files },
     } = this;
+
     return (
       <div className="upload__form">
         <form onSubmit={this.onSubmit}>

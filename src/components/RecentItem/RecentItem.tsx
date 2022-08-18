@@ -2,11 +2,14 @@ import React from "react";
 import { MdOutlineFavorite } from "react-icons/md";
 import { Image } from "semantic-ui-react";
 import { withGlobalProps } from "../../hoc";
-import { RecentType } from "../../types";
+import { PhotoType } from "../../types";
+
+import { BiPhotoAlbum } from "react-icons/bi";
+import { ImHistory } from "react-icons/im";
 import { formatTimeStamp } from "../../utils";
 import "./RecentItem.css";
 interface PropsType {
-  recent: RecentType;
+  photo: PhotoType;
 }
 interface StateType {}
 class RecentItem extends React.Component<PropsType, StateType> {
@@ -17,13 +20,19 @@ class RecentItem extends React.Component<PropsType, StateType> {
   render() {
     const {
       props: {
-        recent: { id, url, timestamp },
+        photo: { id, url, timestamp, favoured },
       },
     } = this;
 
     return (
       <div className="recent__item">
-        <MdOutlineFavorite className="recent__item__icon" />
+        {favoured ? (
+          <MdOutlineFavorite className="recent__item__icon" />
+        ) : (
+          <BiPhotoAlbum className="recent__item__icon" />
+        )}
+        <ImHistory className="recent__item__icon--down" />
+
         <Image
           className="recent__item__image"
           src={url}

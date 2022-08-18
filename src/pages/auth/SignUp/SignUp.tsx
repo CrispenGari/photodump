@@ -1,11 +1,12 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { addDoc, collection } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Form, Icon, Input, Message } from "semantic-ui-react";
 import { auth, db } from "../../../firebase";
 import { withGlobalProps } from "../../../hoc";
 import { ErrorType, GlobalPropsType } from "../../../types";
+import { pick } from "lodash";
 import "./SignUp.css";
 interface PropsType {
   globalProps: GlobalPropsType;
@@ -68,10 +69,28 @@ class SignUp extends React.Component<PropsType, StateType> {
           error: undefined,
           loading: false,
         }));
-        await addDoc(collection(db, "users"), {
-          ...user,
-        });
-        await this.props.globalProps.navigate("/");
+        const _user = pick(user, [
+          "displayName",
+          "email",
+          "phoneNumber",
+          "emailVerified",
+          "photoURL",
+          "uid",
+        ]);
+        await setDoc(
+          doc(db, "users", _user.uid),
+          {
+            user: _user,
+            photos: [],
+          },
+          {
+            merge: true,
+          }
+        )
+          .then(() => {
+            this.props.globalProps.navigate("/");
+          })
+          .catch((err) => console.log(err));
       })
       .catch((error) => {
         this.setState((state) => ({

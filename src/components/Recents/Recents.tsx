@@ -1,50 +1,36 @@
-import {
-  collection,
-  limit,
-  query,
-  where,
-  orderBy,
-  onSnapshot,
-} from "firebase/firestore";
+import { onSnapshot, doc } from "firebase/firestore";
 import React from "react";
 import { db } from "../../firebase";
 import { withGlobalProps } from "../../hoc";
-import { GlobalPropsType, RecentType } from "../../types";
+import { GlobalPropsType, PhotoType } from "../../types";
 import RecentItem from "../RecentItem/RecentItem";
 import "./Recents.css";
 interface PropsType {
   globalProps: GlobalPropsType;
 }
 interface StateType {
-  recents: Array<RecentType>;
+  photos: Array<PhotoType>;
 }
 class Recents extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props);
     this.state = {
-      recents: [],
+      photos: [],
     };
   }
-  q = query(
-    collection(db, "allPictures"),
-    orderBy("timestamp", "desc"),
-    limit(10),
-    where("uid", "==", this.props.globalProps.user.uid)
-  );
-
   unsubscribe = () => {};
 
   componentDidMount() {
-    this.unsubscribe = onSnapshot(this.q, async (querySnapshot) => {
-      this.setState((state) => ({
-        ...state,
-        recents: querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as any,
-      }));
-      querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    });
+    this.unsubscribe = onSnapshot(
+      doc(db, "users", this.props.globalProps.user?.uid as any),
+      async (querySnapshot) => {
+        const photos = querySnapshot.data()?.photos?.slice(0, 10);
+        this.setState((state) => ({
+          ...state,
+          photos,
+        }));
+      }
+    );
   }
 
   componentWillUnmount() {
@@ -52,16 +38,17 @@ class Recents extends React.Component<PropsType, StateType> {
   }
   render() {
     const {
-      state: { recents },
+      state: { photos },
     } = this;
 
+    console.log(photos);
     return (
       <div className="recents">
         <h1>Recent</h1>
         <div className="recents__container">
-          {recents.map((recent) => (
-            <RecentItem key={recent.id} recent={recent} />
-          ))}
+          {photos.length > 0
+            ? photos.map((photo) => <RecentItem key={photo.id} photo={photo} />)
+            : null}
         </div>
       </div>
     );

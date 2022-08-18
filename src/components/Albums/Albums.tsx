@@ -3,14 +3,8 @@ import { Album } from "../../components";
 import { MdOutlineFavorite } from "react-icons/md";
 import { IoMdPhotos } from "react-icons/io";
 import "./Albums.css";
-import { AllPicturesType, FavoriteType, GlobalPropsType } from "../../types";
-import {
-  query,
-  collection,
-  where,
-  onSnapshot,
-  orderBy,
-} from "firebase/firestore";
+import { PhotoType, GlobalPropsType } from "../../types";
+import { onSnapshot, doc } from "firebase/firestore";
 
 import { db } from "../../firebase";
 import { withGlobalProps } from "../../hoc";
@@ -18,8 +12,8 @@ interface PropsType {
   globalProps: GlobalPropsType;
 }
 interface StateType {
-  favorites: Array<FavoriteType>;
-  all: Array<AllPicturesType>;
+  favorites: Array<PhotoType>;
+  all: Array<PhotoType>;
 }
 class Albums extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
@@ -30,50 +24,27 @@ class Albums extends React.Component<PropsType, StateType> {
     };
   }
 
-  allQuery = query(
-    collection(db, "allPictures"),
-    orderBy("timestamp", "desc"),
-    where("uid", "==", this.props.globalProps.user.uid)
-  );
-
-  favoriteQuery = query(
-    collection(db, "favorites"),
-    orderBy("timestamp", "desc"),
-    where("uid", "==", this.props.globalProps.user.uid)
-  );
-  unsubscribe_1 = () => {};
-  unsubscribe_2 = () => {};
+  unsubscribe = () => {};
 
   componentDidMount() {
-    this.unsubscribe_1 = onSnapshot(this.allQuery, async (querySnapshot) => {
-      this.setState((state) => ({
-        ...state,
-        all: querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as any,
-      }));
-      querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    });
-    this.unsubscribe_2 = onSnapshot(
-      this.favoriteQuery,
+    this.unsubscribe = onSnapshot(
+      doc(db, "users", this.props.globalProps.user?.uid as any),
       async (querySnapshot) => {
+        const photos = querySnapshot.data()?.photos as any;
+
+        const favorites = photos?.filter((photo: PhotoType) => photo.favoured);
         this.setState((state) => ({
           ...state,
-          favorites: querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          })) as any,
+          all: photos,
+          favorites,
         }));
-        querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       }
     );
   }
 
   componentWillUnmount() {
     return () => {
-      this.unsubscribe_1();
-      this.unsubscribe_2();
+      this.unsubscribe();
     };
   }
   render() {

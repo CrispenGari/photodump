@@ -8,6 +8,7 @@ import { auth } from "./firebase";
 import { Routes } from "./routes";
 import { StateType } from "./types";
 import "./App.css";
+import { pick } from "lodash";
 
 export const App = () => {
   const user = useSelector((state: StateType) => state.user);
@@ -17,7 +18,15 @@ export const App = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         // user logged in
-        dispatch(setUser(user));
+        const _user = pick(user, [
+          "displayName",
+          "email",
+          "phoneNumber",
+          "emailVerified",
+          "photoURL",
+          "uid",
+        ]);
+        dispatch(setUser(_user));
       } else {
         // user in not logged in
         dispatch(setUser(null));

@@ -8,7 +8,7 @@ export interface ActionType {
 }
 
 export interface StateType {
-  user: any;
+  user: UserType;
 }
 
 export interface GlobalPropsType {
@@ -16,7 +16,7 @@ export interface GlobalPropsType {
   navigate: NavigateFunction;
   params: Readonly<Params<string>>;
   dispatch: Dispatch<AnyAction>;
-  user: any;
+  user: UserType | null;
 }
 
 export interface ErrorType {
@@ -24,16 +24,24 @@ export interface ErrorType {
   value: string;
 }
 
-export interface RecentType {
-  displayName?: string;
+export interface UserType {
+  displayName: string;
   email: string;
-  id: string;
   phoneNumber?: string;
+  emailVerified: boolean;
   photoURL?: string;
-  timestamp: any;
   uid: string;
-  url: string;
 }
 
-export type FavoriteType = RecentType;
-export type AllPicturesType = FavoriteType;
+export interface PhotoType {
+  id: string;
+  url: string;
+  favoured: true | false;
+  timestamp: Date;
+  name?: string;
+}
+
+export interface DocType {
+  user: UserType;
+  photos: Array<PhotoType>;
+}

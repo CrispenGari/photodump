@@ -6,19 +6,25 @@
   background-color: white;
   border-radius: 5px;
   justify-content: flex-start;
-  height: 200px !important;
+  height: 220px !important;
   position: relative;
   transition: all 1s;
   margin: 5px 10px 5px 0px;
 }
 
-.recent__item__icon {
+.recent__item__icon,
+.recent__item__icon--down {
   position: absolute;
   color: var(--header-color) !important;
   z-index: 10;
   font-size: 1.5rem;
   right: 10px;
   top: 10px;
+}
+.recent__item__icon--down {
+  bottom: 10px !important;
+  left: 10px !important;
+  color: white !important;
 }
 .recent__item__image {
   width: 100%;
