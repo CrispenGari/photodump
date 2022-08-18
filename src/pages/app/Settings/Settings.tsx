@@ -17,8 +17,9 @@ class Settings extends React.Component<PropsType, StateType> {
     const {} = this;
     return (
       <div className="settings">
+        <Header openModal={() => {}} />
         <div className="settings__main">
-          <Header openModal={() => {}} />
+          <h1>Settings</h1>
         </div>
       </div>
     );

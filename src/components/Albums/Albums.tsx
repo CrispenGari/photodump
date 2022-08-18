@@ -31,7 +31,6 @@ class Albums extends React.Component<PropsType, StateType> {
       doc(db, "users", this.props.globalProps.user?.uid as any),
       async (querySnapshot) => {
         const photos = querySnapshot.data()?.photos as any;
-
         const favorites = photos?.filter((photo: PhotoType) => photo.favoured);
         this.setState((state) => ({
           ...state,
@@ -50,6 +49,9 @@ class Albums extends React.Component<PropsType, StateType> {
   render() {
     const {
       state: { favorites, all },
+      props: {
+        globalProps: { navigate },
+      },
     } = this;
 
     return (
@@ -58,14 +60,14 @@ class Albums extends React.Component<PropsType, StateType> {
         <div className="albums__container">
           <Album
             Icon={IoMdPhotos}
-            onClick={() => {}}
+            onClick={() => navigate("/all")}
             itemsCount={all.length}
             title="All Photos"
             coverUrl={all.length === 0 ? "/1.jpg" : all[0].url}
           />
           <Album
             Icon={MdOutlineFavorite}
-            onClick={() => {}}
+            onClick={() => navigate("/favorites")}
             itemsCount={favorites.length}
             title="Favorites"
             coverUrl={favorites.length === 0 ? "/1.jpg" : favorites[0].url}

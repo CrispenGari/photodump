@@ -23,3 +23,16 @@ export const formatTimeStamp = (timestamp: any) => {
         month.toString().length === 2 ? month : "0" + month.toString()
       }/${year}`;
 };
+
+export const getBase64 = (file: any) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+
+export const validatePhoneNumber = (phoneNumber: string): boolean =>
+  new RegExp(
+    /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
+  ).test(phoneNumber);

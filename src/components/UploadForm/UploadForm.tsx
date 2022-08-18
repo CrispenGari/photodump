@@ -7,7 +7,7 @@ import { GlobalPropsType, PhotoType } from "../../types";
 import { storage, db } from "../../firebase";
 // import { decode } from "base64-arraybuffer";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { dataURLtoFile } from "../../utils";
+import { dataURLtoFile, getBase64 } from "../../utils";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import { v4 as uuid_v4 } from "uuid";
@@ -31,24 +31,16 @@ class UploadForm extends React.Component<PropsType, StateType> {
       progress: false,
     };
     this.handleChange = this.handleChange.bind(this);
-    this.getBase64 = this.getBase64.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  getBase64 = (file: any) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
   handleChange = async (files: any) => {
     let _files: Array<any> = [];
     if (files) {
       this.setState((state) => ({ ...state, progress: true }));
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        const _file = await this.getBase64(file);
+        const _file = await getBase64(file);
         _files.push({
           fileName: file.name,
           size: file.size,

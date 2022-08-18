@@ -1,9 +1,9 @@
 import React from "react";
-import { Header, ProfileCard } from "../../../components";
-import "./Profile.css";
+import { Header } from "../../../components";
+import "./Favorites.css";
 interface PropsType {}
 interface StateType {}
-class Profile extends React.Component<PropsType, StateType> {
+class Favorites extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props);
     this.state = {};
@@ -12,14 +12,14 @@ class Profile extends React.Component<PropsType, StateType> {
     // eslint-disable-next-line
     const {} = this;
     return (
-      <div className="profile">
+      <div className="favorites">
         <Header openModal={() => {}} />
-        <div className="profile__main">
-          <ProfileCard />
+        <div className="favorites__main">
+          <h1>Favorite</h1>
         </div>
       </div>
     );
   }
 }
 
-export default Profile;
+export default Favorites;

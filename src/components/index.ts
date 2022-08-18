@@ -5,3 +5,4 @@ export { default as Albums } from "./Albums/Albums";
 export { default as Album } from "./Album/Album";
 export { default as RecentItem } from "./RecentItem/RecentItem";
 export { default as UploadForm } from "./UploadForm/UploadForm";
+export { default as ProfileCard } from "./ProfileCard/ProfileCard";
