@@ -1,0 +1,15 @@
+.auth__footer {
+  background-color: white;
+  justify-content: center;
+  padding: 10px 20px;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
+p {
+  color: gray;
+  font-size: 0.9rem;
+}

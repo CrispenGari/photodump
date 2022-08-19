@@ -24,7 +24,9 @@ class Recents extends React.Component<PropsType, StateType> {
     this.unsubscribe = onSnapshot(
       doc(db, "users", this.props.globalProps.user?.uid as any),
       async (querySnapshot) => {
-        const photos = querySnapshot.data()?.photos?.slice(0, 10);
+        const limit = querySnapshot.data()?.settings?.recentLimit || 10;
+
+        const photos = querySnapshot.data()?.photos?.slice(0, limit);
         this.setState((state) => ({
           ...state,
           photos,
@@ -40,8 +42,6 @@ class Recents extends React.Component<PropsType, StateType> {
     const {
       state: { photos },
     } = this;
-
-    console.log(photos);
     return (
       <div className="recents">
         <h1>Recent</h1>

@@ -1,15 +1,17 @@
+import { updateProfile } from "firebase/auth";
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Input, Form, Card, Message } from "semantic-ui-react";
-import { db, storage } from "../../firebase";
+import { auth, db, storage } from "../../firebase";
 import { withGlobalProps } from "../../hoc";
 import { ErrorType, GlobalPropsType, PhotoType, UserType } from "../../types";
 import { getBase64, validatePhoneNumber } from "../../utils";
 import "./ProfileCard.css";
 interface PropsType {
   globalProps: GlobalPropsType;
+  readonly: boolean;
 }
 interface StateType {
   email?: string;
@@ -67,6 +69,7 @@ class ProfileCard extends React.Component<PropsType, StateType> {
   }
   onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    await this.updateInfo();
   };
   onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name, files } = e.target;
@@ -114,6 +117,11 @@ class ProfileCard extends React.Component<PropsType, StateType> {
                   merge: true,
                 }
               );
+              if (auth.currentUser) {
+                await updateProfile(auth.currentUser, {
+                  photoURL: url,
+                });
+              }
             })
             .catch((e) => console.log(e))
             .finally(() => {
@@ -152,6 +160,13 @@ class ProfileCard extends React.Component<PropsType, StateType> {
         merge: true,
       }
     );
+    if (auth.currentUser) {
+      await updateProfile(auth.currentUser, {
+        displayName: username,
+      });
+
+      // await updatePhoneNumber(auth.currentUser, new PhoneAuthCredential(auth))
+    }
 
     this.setState((state) => ({
       ...state,
@@ -179,6 +194,7 @@ class ProfileCard extends React.Component<PropsType, StateType> {
       },
       inputRef,
       updateProfilePicture,
+      props: { readonly },
     } = this;
     return (
       <div className="profile__card">
@@ -195,10 +211,16 @@ class ProfileCard extends React.Component<PropsType, StateType> {
             src={profileImage ? profileImage : "/profile.jpg"}
             alt="profile"
             onClick={() => {
-              (inputRef.current as any).click();
+              if (readonly) {
+                return;
+              } else {
+                (inputRef.current as any).click();
+              }
             }}
           />
-          {profileImage?.startsWith("data:image/") ? (
+          {readonly ? (
+            <></>
+          ) : profileImage?.startsWith("data:image/") ? (
             <>
               <Button
                 secondary
@@ -256,6 +278,10 @@ class ProfileCard extends React.Component<PropsType, StateType> {
           onSubmit={onSubmit}
           className="profile__card__info"
         >
+          <p>
+            To <strong>update</strong> the email visit you{" "}
+            <Link to={"/settings"}>Settings</Link>.
+          </p>
           <div className="profile__card__info__inputs">
             <Input
               iconPosition="left"
@@ -295,7 +321,6 @@ class ProfileCard extends React.Component<PropsType, StateType> {
               onChange={onChange}
               icon={<Icon name="phone" />}
               className="profile__card__info__input"
-              //   fluid
               disabled={!enableEdit}
             />
             <div className="profile__card__info__input"></div>
@@ -305,33 +330,35 @@ class ProfileCard extends React.Component<PropsType, StateType> {
               <p>{error ? error.value : ""}</p>
             </Message>
           )}
-          <div className="profile__card__info__buttons">
-            <Button
-              primary
-              onClick={() => {
-                this.setState((state) => ({
-                  ...state,
-                  enableEdit: !enableEdit,
-                }));
-              }}
-            >
-              {enableEdit ? "done" : "edit"}
-            </Button>
-            <Button secondary onClick={this.updateInfo}>
-              update
-            </Button>
-          </div>
+          {!readonly && (
+            <div className="profile__card__info__buttons">
+              <Button
+                primary
+                onClick={() => {
+                  this.setState((state) => ({
+                    ...state,
+                    enableEdit: !enableEdit,
+                  }));
+                }}
+              >
+                {enableEdit ? "done" : "edit"}
+              </Button>
+              <Button secondary onClick={this.updateInfo}>
+                update
+              </Button>
+            </div>
+          )}
           <Card>
             <Card.Content extra>
               <Link to="/all">
                 <Icon name="picture" />
-                {all.length} Pictures
+                {all?.length} Pictures
               </Link>
             </Card.Content>
             <Card.Content extra>
               <Link to="/favorites">
                 <Icon name="heart" />
-                {favorites.length} Favorites
+                {favorites?.length} Favorites
               </Link>
             </Card.Content>
           </Card>

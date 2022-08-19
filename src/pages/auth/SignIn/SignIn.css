@@ -3,8 +3,14 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+}
+.sign__in__wrapper {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex: 1;
 }
 .sign__in__card {
   padding: 20px !important;

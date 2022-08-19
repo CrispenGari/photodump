@@ -3,10 +3,15 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+}
+.welcome__wrapper {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex: 1;
 }
-
 .welcome__card {
   padding: 20px !important;
   width: 100% !important;

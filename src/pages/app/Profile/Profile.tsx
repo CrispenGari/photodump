@@ -1,5 +1,10 @@
 import React from "react";
-import { Header, ProfileCard } from "../../../components";
+import {
+  Footer,
+  Header,
+  ProfileCard,
+  ProfileLogoutButton,
+} from "../../../components";
 import "./Profile.css";
 interface PropsType {}
 interface StateType {}
@@ -15,8 +20,10 @@ class Profile extends React.Component<PropsType, StateType> {
       <div className="profile">
         <Header openModal={() => {}} />
         <div className="profile__main">
-          <ProfileCard />
+          <ProfileCard readonly={false} />
+          <ProfileLogoutButton />
         </div>
+        <Footer />
       </div>
     );
   }

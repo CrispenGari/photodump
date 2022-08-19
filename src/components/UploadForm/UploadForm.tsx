@@ -70,7 +70,7 @@ class UploadForm extends React.Component<PropsType, StateType> {
       for (let i = 0; i < files.length; i++) {
         this.setState((state) => ({ ...state, progress: true }));
         const { fileName, base64 } = files[i];
-        const _fileName = uuid_v4().slice(0, 10) + fileName.split(".")[1];
+        const _fileName = uuid_v4().slice(0, 10) + "." + fileName.split(".")[1];
         const storageRef = ref(storage, `images/${_fileName}`);
         const uploadTask = uploadBytesResumable(
           storageRef,

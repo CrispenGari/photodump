@@ -1,0 +1,54 @@
+.change__email__card {
+  display: flex;
+  margin: 2px auto;
+  background-color: white;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  user-select: none;
+  user-zoom: none;
+  flex-direction: column;
+}
+.change__email__message {
+  margin: 0 !important;
+  margin-bottom: 5px !important;
+}
+.change__email__card > h1 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  padding: 10px 0;
+  border-bottom: 1px solid lightgray;
+}
+.change__email__card__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.change__email__card__form__input {
+  width: 300px;
+  flex: 1;
+}
+.change__email__card__form__input:first-child {
+  margin-right: 10px;
+}
+.change__email__card__form > button {
+  width: fit-content;
+}
+.change__email__card__inputs {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 480px) {
+  .change__email__card__form__input {
+    margin: unset;
+  }
+  .change__email__card__inputs {
+    flex-direction: column;
+    width: 100%;
+  }
+  .change__email__card__form__input {
+    width: 100%;
+    margin: 3px 0;
+  }
+}

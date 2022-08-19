@@ -31,3 +31,9 @@
 @media only screen and (max-width: 1201px) {
   /* Extra large screens, TV.. */
 }
+/* @media (orientation: landscape) {
+  .app {
+    overflow-y: scroll;
+    margin: 20px 0;
+  }
+} */

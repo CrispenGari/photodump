@@ -1,5 +1,11 @@
 import React from "react";
-import { Header, Albums, Recents, UploadForm } from "../../../components";
+import {
+  Header,
+  Albums,
+  Recents,
+  UploadForm,
+  Footer,
+} from "../../../components";
 import "./Home.css";
 interface PropsType {}
 interface StateType {
@@ -31,6 +37,7 @@ class Home extends React.Component<PropsType, StateType> {
           <Albums />
           <Recents />
         </div>
+        <Footer />
       </div>
     );
   }

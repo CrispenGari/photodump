@@ -3,10 +3,14 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+}
+.not__found__wrapper {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  user-select: none;
-  user-zoom: none;
+  flex: 1;
 }
 
 .not__found__card {

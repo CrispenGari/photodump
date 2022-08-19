@@ -2,6 +2,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Form, Input, Icon, Message } from "semantic-ui-react";
+import { AuthFooter } from "../../../components";
 import { auth } from "../../../firebase";
 import { withGlobalProps } from "../../../hoc";
 import { ErrorType, GlobalPropsType } from "../../../types";
@@ -73,61 +74,64 @@ class SignIn extends React.Component<PropsType, StateType> {
     } = this;
     return (
       <div className="sign__in">
-        <div className="sign__in__card">
-          <div className="sign__in__card__content">
-            <img alt="logo" src="/logo.png" />
-            <h1>Sign In</h1>
+        <div className="sign__in__wrapper">
+          <div className="sign__in__card">
+            <div className="sign__in__card__content">
+              <img alt="logo" src="/logo.png" />
+              <h1>Sign In</h1>
+              <p>
+                If you have an account you can <strong>Sign In</strong>.
+              </p>
+            </div>
+            <Form
+              loading={loading}
+              className={"sign__in__form"}
+              onSubmit={onSubmit}
+            >
+              <Input
+                iconPosition="left"
+                type={"email"}
+                placeholder="email@domain.com"
+                name="email"
+                value={email}
+                error={error?.field === "email"}
+                onChange={onChange}
+                icon={<Icon name="at" />}
+                className="sign__in__form__input"
+                fluid
+              />
+
+              <Input
+                iconPosition="left"
+                fluid
+                type={"password"}
+                placeholder="password"
+                icon={<Icon name="lock" />}
+                name="password"
+                value={password}
+                error={error?.field === "password"}
+                onChange={onChange}
+                className="sign__in__form__input"
+              />
+              <div className="sign__in__forgot__password">
+                <Link to={"/auth/reset-password"}>Forgot Password?</Link>
+              </div>
+              {error?.value && (
+                <Message negative>
+                  <p>{error ? error.value : ""}</p>
+                </Message>
+              )}
+              <Button color="green" fluid>
+                Sign In
+              </Button>
+            </Form>
             <p>
-              If you have an account you can <strong>Sign In</strong>.
+              If you don't an account you can{" "}
+              <Link to={"/auth/sign-up"}>Sign Up</Link>.
             </p>
           </div>
-          <Form
-            loading={loading}
-            className={"sign__in__form"}
-            onSubmit={onSubmit}
-          >
-            <Input
-              iconPosition="left"
-              type={"email"}
-              placeholder="email@domain.com"
-              name="email"
-              value={email}
-              error={error?.field === "email"}
-              onChange={onChange}
-              icon={<Icon name="at" />}
-              className="sign__in__form__input"
-              fluid
-            />
-
-            <Input
-              iconPosition="left"
-              fluid
-              type={"password"}
-              placeholder="password"
-              icon={<Icon name="lock" />}
-              name="password"
-              value={password}
-              error={error?.field === "password"}
-              onChange={onChange}
-              className="sign__in__form__input"
-            />
-            <div className="sign__in__forgot__password">
-              <Link to={"/auth/reset-password"}>Forgot Password?</Link>
-            </div>
-            {error?.value && (
-              <Message negative>
-                <p>{error ? error.value : ""}</p>
-              </Message>
-            )}
-            <Button color="green" fluid>
-              Sign In
-            </Button>
-          </Form>
-          <p>
-            If you don't an account you can{" "}
-            <Link to={"/auth/sign-up"}>Sign Up</Link>.
-          </p>
         </div>
+        <AuthFooter />
       </div>
     );
   }

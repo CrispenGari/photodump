@@ -1,5 +1,15 @@
 import React from "react";
-import { Header } from "../../../components";
+import {
+  ChangeEmailCard,
+  ChangePasswordCard,
+  DeleteAccountSetting,
+  Footer,
+  ForgotPassword,
+  Header,
+  ProfileCard,
+  ProfileLogoutButton,
+  RecentLimitSetting,
+} from "../../../components";
 import { withGlobalProps } from "../../../hoc";
 import { GlobalPropsType } from "../../../types";
 import "./Settings.css";
@@ -19,8 +29,16 @@ class Settings extends React.Component<PropsType, StateType> {
       <div className="settings">
         <Header openModal={() => {}} />
         <div className="settings__main">
-          <h1>Settings</h1>
+          <ProfileCard readonly={true} />
+          <ChangeEmailCard />
+          <ChangePasswordCard />
+          <ForgotPassword />
+          <RecentLimitSetting />
+          <DeleteAccountSetting />
+
+          <ProfileLogoutButton />
         </div>
+        <Footer />
       </div>
     );
   }

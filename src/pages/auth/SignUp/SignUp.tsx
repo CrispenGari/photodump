@@ -8,6 +8,7 @@ import { withGlobalProps } from "../../../hoc";
 import { ErrorType, GlobalPropsType } from "../../../types";
 import { pick } from "lodash";
 import "./SignUp.css";
+import { AuthFooter } from "../../../components";
 interface PropsType {
   globalProps: GlobalPropsType;
 }
@@ -82,6 +83,9 @@ class SignUp extends React.Component<PropsType, StateType> {
           {
             user: _user,
             photos: [],
+            settings: {
+              recentLimit: 10,
+            },
           },
           {
             merge: true,
@@ -125,72 +129,75 @@ class SignUp extends React.Component<PropsType, StateType> {
 
     return (
       <div className="sign__up">
-        <div className="sign__up__card">
-          <div className="sign__up__card__content">
-            <img alt="logo" src="/logo.png" />
-            <h1>Sign Up</h1>
+        <div className="sign__up__wrapper">
+          <div className="sign__up__card">
+            <div className="sign__up__card__content">
+              <img alt="logo" src="/logo.png" />
+              <h1>Sign Up</h1>
+              <p>
+                If you have an account you can <strong>Sign In</strong>.
+              </p>
+            </div>
+            <Form
+              loading={loading}
+              className={"sign__up__form"}
+              onSubmit={onSubmit}
+            >
+              <Input
+                fluid
+                className={"sign__up__form__input"}
+                iconPosition="left"
+                type={"email"}
+                onChange={onChange}
+                placeholder="email@domain.com"
+                icon={<Icon name="at" />}
+                key={"email"}
+                value={email}
+                name="email"
+                error={error?.field === "email"}
+              />
+
+              <Input
+                className={"sign__up__form__input"}
+                iconPosition="left"
+                onChange={onChange}
+                type={"password"}
+                placeholder="password"
+                icon={<Icon name="lock" />}
+                value={password}
+                name="password"
+                fluid
+                error={error?.field === "password"}
+              />
+              <Input
+                className={"sign__up__form__input"}
+                iconPosition="left"
+                type={"password"}
+                placeholder="confirm password"
+                onChange={onChange}
+                icon={<Icon name="lock" />}
+                value={confPassword}
+                name={"confPassword"}
+                fluid
+                error={error?.field === "confPassword"}
+              />
+              {error?.value && (
+                <Message negative>
+                  <p>{error ? error.value : ""}</p>
+                </Message>
+              )}
+              <Button color="green" type="submit" fluid>
+                Sign Up
+              </Button>
+            </Form>
+
             <p>
-              If you have an account you can <strong>Sign In</strong>.
+              Already have an account you can{" "}
+              <Link to={"/auth/sign-in"}>Sign In</Link>.
             </p>
           </div>
-          <Form
-            loading={loading}
-            className={"sign__up__form"}
-            onSubmit={onSubmit}
-          >
-            <Input
-              fluid
-              className={"sign__up__form__input"}
-              iconPosition="left"
-              type={"email"}
-              onChange={onChange}
-              placeholder="email@domain.com"
-              icon={<Icon name="at" />}
-              key={"email"}
-              value={email}
-              name="email"
-              error={error?.field === "email"}
-            />
-
-            <Input
-              className={"sign__up__form__input"}
-              iconPosition="left"
-              onChange={onChange}
-              type={"password"}
-              placeholder="password"
-              icon={<Icon name="lock" />}
-              value={password}
-              name="password"
-              fluid
-              error={error?.field === "password"}
-            />
-            <Input
-              className={"sign__up__form__input"}
-              iconPosition="left"
-              type={"password"}
-              placeholder="confirm password"
-              onChange={onChange}
-              icon={<Icon name="lock" />}
-              value={confPassword}
-              name={"confPassword"}
-              fluid
-              error={error?.field === "confPassword"}
-            />
-            {error?.value && (
-              <Message negative>
-                <p>{error ? error.value : ""}</p>
-              </Message>
-            )}
-            <Button color="green" type="submit" fluid>
-              Sign Up
-            </Button>
-          </Form>
-
-          <p>
-            Already have an account you can{" "}
-            <Link to={"/auth/sign-in"}>Sign In</Link>.
-          </p>
         </div>
+        <AuthFooter />
       </div>
     );
   }

@@ -2,6 +2,7 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Form, Input, Icon, Message, Button } from "semantic-ui-react";
+import { AuthFooter } from "../../../components";
 import { auth } from "../../../firebase";
 import { withGlobalProps } from "../../../hoc";
 import { ErrorType, GlobalPropsType } from "../../../types";
@@ -71,53 +72,56 @@ class ResetPassword extends React.Component<PropsType, StateType> {
     } = this;
     return (
       <div className="reset__password">
-        <div className="reset__password__card">
-          <div className="reset__password__card__content">
-            <img alt="logo" src="/logo.png" />
-            <h1>Reset Password</h1>
+        <div className="reset__password__wrapper">
+          <div className="reset__password__card">
+            <div className="reset__password__card__content">
+              <img alt="logo" src="/logo.png" />
+              <h1>Reset Password</h1>
+              <p>
+                If you have an account and you{" "}
+                <strong>forgot your password</strong> you can reset it via{" "}
+                <strong>email</strong>. Please provide a valid{" "}
+                <strong>email</strong> address for your account.
+              </p>
+            </div>
+            <Form
+              loading={loading}
+              className={"reset__password__form"}
+              onSubmit={onSubmit}
+            >
+              <Input
+                iconPosition="left"
+                type={"email"}
+                placeholder="email@domain.com"
+                name="email"
+                value={email}
+                error={error?.field === "email"}
+                onChange={onChange}
+                icon={<Icon name="at" />}
+                className="reset__password__form__input"
+                fluid
+              />
+              {message && (
+                <Message color="green">
+                  <p>{message}</p>
+                </Message>
+              )}
+              {error?.value && (
+                <Message negative>
+                  <p>{error ? error.value : ""}</p>
+                </Message>
+              )}
+              <Button color="green" fluid>
+                Request Password Reset Email
+              </Button>
+            </Form>
             <p>
-              If you have an account and you{" "}
-              <strong>forgot your password</strong> you can reset it via{" "}
-              <strong>email</strong>. Please provide a valid{" "}
-              <strong>email</strong> address for your account.
+              Or you have remembered your password{" "}
+              <Link to={"/auth/sign-in"}>Sign In</Link>.
             </p>
           </div>
-          <Form
-            loading={loading}
-            className={"reset__password__form"}
-            onSubmit={onSubmit}
-          >
-            <Input
-              iconPosition="left"
-              type={"email"}
-              placeholder="email@domain.com"
-              name="email"
-              value={email}
-              error={error?.field === "email"}
-              onChange={onChange}
-              icon={<Icon name="at" />}
-              className="reset__password__form__input"
-              fluid
-            />
-            {message && (
-              <Message color="green">
-                <p>{message}</p>
-              </Message>
-            )}
-            {error?.value && (
-              <Message negative>
-                <p>{error ? error.value : ""}</p>
-              </Message>
-            )}
-            <Button color="green" fluid>
-              Request Password Reset Email
-            </Button>
-          </Form>
-          <p>
-            Or you have remembered your password{" "}
-            <Link to={"/auth/sign-in"}>Sign In</Link>.
-          </p>
         </div>
+        <AuthFooter />
       </div>
     );
   }

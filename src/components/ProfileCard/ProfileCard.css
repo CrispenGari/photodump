@@ -5,6 +5,8 @@
   width: 100%;
   padding: 10px;
   border-radius: 5px;
+  user-select: none;
+  user-zoom: none;
 }
 .profile__card__info {
   flex: 1;

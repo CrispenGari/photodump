@@ -1,0 +1,32 @@
+.recent__limit__setting {
+  display: flex;
+  margin: 2px auto;
+  background-color: white;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  user-select: none;
+  user-zoom: none;
+  flex-direction: column;
+}
+
+.recent__limit__setting > h1 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  padding: 10px 0;
+  border-bottom: 1px solid lightgray;
+}
+.recent__limit__setting__inputs {
+  display: flex;
+}
+.recent__limit__setting__inputs > button {
+  margin-left: 10px !important;
+}
+.recent__limit__message {
+  display: flex !important;
+  flex-direction: column !important;
+  margin: 5px auto;
+}
+.recent__limit__message > p {
+  margin: 0 !important;
+}
