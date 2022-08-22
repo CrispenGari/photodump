@@ -31,7 +31,7 @@ class ChangePasswordCard extends React.Component<PropsType, StateType> {
       confirmPassword: "",
     };
   }
-  onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const {
       state: { password, confirmPassword, currentPassword },
@@ -59,25 +59,26 @@ class ChangePasswordCard extends React.Component<PropsType, StateType> {
         user?.email as string,
         currentPassword.trim()
       );
-      reauthenticateWithCredential(auth.currentUser, credentials)
-        .then(async () => {
-          console.log(password, auth.currentUser);
-          updatePassword(auth.currentUser as any, password.trim())
-            .then(() => {
-              console.log("Password upd");
-              // await signOut(auth).finally(() => navigate("/"));
-            })
-            .catch((error) => {
-              console.log(error);
-              this.setState((state) => ({
-                ...state,
-                error: {
-                  field: "confirmPassword",
-                  value: error.message,
-                },
-              }));
-              return;
-            });
+      await reauthenticateWithCredential(auth.currentUser, credentials)
+        .then(() => {
+          console.log("The user has been re-authenticated");
+          try {
+            if (auth.currentUser)
+              updatePassword(auth.currentUser, password.trim());
+            else throw new Error("Failed to update password no user.");
+          } catch (error) {
+            console.log(error);
+            this.setState((state) => ({
+              ...state,
+              error: {
+                field: "confirmPassword",
+                value: "error",
+              },
+            }));
+          }
+
+          console.log("Password updated");
+          // await signOut(auth).finally(() => navigate("/"));
         })
         .catch((error) => {
           this.setState((state) => ({

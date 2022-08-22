@@ -1,11 +1,11 @@
 import React from "react";
 import { MdOutlineFavorite } from "react-icons/md";
+import { BiPhotoAlbum } from "react-icons/bi";
+import { ImHistory } from "react-icons/im";
 import { Image } from "semantic-ui-react";
 import { withGlobalProps } from "../../hoc";
 import { PhotoType } from "../../types";
 
-import { BiPhotoAlbum } from "react-icons/bi";
-import { ImHistory } from "react-icons/im";
 import { formatTimeStamp } from "../../utils";
 import "./RecentItem.css";
 interface PropsType {

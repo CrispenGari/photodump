@@ -14,4 +14,27 @@
   width: 100%;
   max-width: 1000px;
   margin: 0px auto;
+  background-color: var(--color-gray);
+}
+
+.all__main > h1 {
+  color: var(--color-green);
+  font-size: 1rem;
+  border-bottom: 1px solid var(--color-green);
+  text-transform: uppercase;
+  width: 100%;
+  padding: 5px 0;
+  padding: 20px;
+  user-select: none;
+  user-zoom: none;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.all__main__photos {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 0 10px 10px 10px;
 }

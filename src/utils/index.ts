@@ -1,3 +1,5 @@
+import { saveAs } from "file-saver";
+
 export const dataURLtoFile = (dataurl: string, filename: string) => {
   const arr = dataurl.split(",");
   const mime = (arr[0] as any).match(/:(.*?);/)[1];
@@ -36,3 +38,7 @@ export const validatePhoneNumber = (phoneNumber: string): boolean =>
   new RegExp(
     /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
   ).test(phoneNumber);
+
+export const downloadImage = async (url: string, name: string) => {
+  await saveAs(url, name);
+};

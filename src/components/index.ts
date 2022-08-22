@@ -1,4 +1,7 @@
 export { default as Header } from "./Header/Header";
+export { default as IconButton } from "./IconButton/IconButton";
+export { default as Photo } from "./Photo/Photo";
+export { default as PhotoViewer } from "./PhotoViewer/PhotoViewer";
 export { default as HeaderButton } from "./HeaderButton/HeaderButton";
 export { default as Recents } from "./Recents/Recents";
 export { default as Albums } from "./Albums/Albums";

@@ -54,6 +54,5 @@
 @media (orientation: landscape) {
   .sign__up {
     overflow-y: scroll;
-    background-color: rebeccapurple !important;
   }
 }
