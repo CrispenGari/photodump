@@ -67,3 +67,40 @@
 .photo__viewer__icon__btn--next {
   right: 10px !important;
 }
+.photo__viewer__footer__controls {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 5px;
+}
+.photo__viewer__footer__info {
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  border-top: 1px solid lightgray;
+  margin-top: 5px !important;
+}
+.photo__viewer__footer__info > p {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 5px auto;
+  justify-content: space-between;
+}
+.photo__viewer__footer__info > h1 {
+  margin: unset !important;
+  margin-top: 5px !important;
+  width: 100%;
+  text-align: center;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+.photo__viewer__footer__controls__icon__btn {
+  width: 40px !important;
+  height: 40px !important;
+  font-size: 1.5rem !important;
+}
+.photo__viewer__main__btn {
+  position: absolute;
+  width: fit-content !important;
+  right: 0 !important;
+}

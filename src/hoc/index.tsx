@@ -8,11 +8,20 @@ export const withGlobalProps = (Component: any) => {
     const dispatch = useDispatch();
     const user = useSelector((state: StateType) => state.user);
     const album = useSelector((state: StateType) => state.album);
+    const albumPhotos = useSelector((state: StateType) => state.albumPhotos);
     const params = useParams();
     return (
       <Component
         {...props}
-        globalProps={{ location, navigate, params, user, dispatch, album }}
+        globalProps={{
+          location,
+          navigate,
+          params,
+          user,
+          dispatch,
+          album,
+          albumPhotos,
+        }}
       />
     );
   }

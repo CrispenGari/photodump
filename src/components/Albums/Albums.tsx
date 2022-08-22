@@ -8,6 +8,7 @@ import { onSnapshot, doc } from "firebase/firestore";
 
 import { db } from "../../firebase";
 import { withGlobalProps } from "../../hoc";
+import { setAlbumPhotos } from "../../actions";
 interface PropsType {
   globalProps: GlobalPropsType;
 }
@@ -27,11 +28,24 @@ class Albums extends React.Component<PropsType, StateType> {
   unsubscribe = () => {};
 
   componentDidMount() {
+    const { dispatch } = this.props.globalProps;
     this.unsubscribe = onSnapshot(
       doc(db, "users", this.props.globalProps.user?.uid as any),
       async (querySnapshot) => {
         const photos = querySnapshot.data()?.photos as any;
         const favorites = photos?.filter((photo: PhotoType) => photo.favoured);
+        dispatch(
+          setAlbumPhotos({
+            album: "ALL",
+            photos,
+          })
+        );
+        dispatch(
+          setAlbumPhotos({
+            album: "FAVORITES",
+            photos: favorites,
+          })
+        );
         this.setState((state) => ({
           ...state,
           all: photos,

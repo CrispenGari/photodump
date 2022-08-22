@@ -7,6 +7,11 @@ export interface ActionType {
   payload: any;
 }
 
+export interface AllPhotosType {
+  all: PhotoType[];
+  favorites: PhotoType[];
+  recent: PhotoType[];
+}
 export interface AlbumType {
   current?: PhotoType;
   albumName: "RECENT" | "FAVORITES" | "ALL";
@@ -14,6 +19,7 @@ export interface AlbumType {
 export interface StateType {
   user: UserType;
   album: AlbumType;
+  albumPhotos: AllPhotosType;
 }
 
 export interface GlobalPropsType {
@@ -23,6 +29,7 @@ export interface GlobalPropsType {
   dispatch: Dispatch<AnyAction>;
   user: UserType | null;
   album: AlbumType;
+  albumPhotos: AllPhotosType;
 }
 
 export interface ErrorType {

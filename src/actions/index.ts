@@ -12,3 +12,10 @@ export const setAlbum = (payload: any) => {
     type: constants.SET_ALBUM,
   };
 };
+
+export const setAlbumPhotos = (payload: any) => {
+  return {
+    payload,
+    type: constants.SET_ALBUM_PHOTOS,
+  };
+};

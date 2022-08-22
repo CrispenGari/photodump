@@ -131,23 +131,7 @@ class RecentItem extends React.Component<PropsType, StateType> {
     } = this;
 
     return (
-      <div
-        className="recent__item"
-        onClick={() => {
-          const alb: AlbumType = {
-            albumName: "RECENT",
-            current: {
-              id,
-              url,
-              timestamp,
-              favoured,
-              name,
-            },
-          };
-
-          dispatch(setAlbum(alb));
-        }}
-      >
+      <div className="recent__item">
         {favoured ? (
           <MdOutlineFavorite className="recent__item__icon" />
         ) : (
@@ -181,6 +165,19 @@ class RecentItem extends React.Component<PropsType, StateType> {
           src={url}
           alt={id}
           loading="lazy"
+          onClick={() => {
+            const alb: AlbumType = {
+              albumName: "RECENT",
+              current: {
+                id,
+                url,
+                timestamp,
+                favoured,
+                name,
+              },
+            };
+            dispatch(setAlbum(alb));
+          }}
         />
         <h1>{id.substring(0, 10)}</h1>
         <p>

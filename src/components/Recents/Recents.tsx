@@ -1,5 +1,6 @@
 import { onSnapshot, doc } from "firebase/firestore";
 import React from "react";
+import { setAlbumPhotos } from "../../actions";
 import { db } from "../../firebase";
 import { withGlobalProps } from "../../hoc";
 import { GlobalPropsType, PhotoType } from "../../types";
@@ -21,12 +22,18 @@ class Recents extends React.Component<PropsType, StateType> {
   unsubscribe = () => {};
 
   componentDidMount() {
+    const { dispatch } = this.props.globalProps;
     this.unsubscribe = onSnapshot(
       doc(db, "users", this.props.globalProps.user?.uid as any),
       async (querySnapshot) => {
         const limit = querySnapshot.data()?.settings?.recentLimit || 10;
-
         const photos = querySnapshot.data()?.photos?.slice(0, limit);
+        dispatch(
+          setAlbumPhotos({
+            album: "RECENT",
+            photos,
+          })
+        );
         this.setState((state) => ({
           ...state,
           photos,

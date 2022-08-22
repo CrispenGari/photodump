@@ -13,7 +13,7 @@ export const dataURLtoFile = (dataurl: string, filename: string) => {
 };
 
 export const formatTimeStamp = (timestamp: any) => {
-  const dateTime = new Date(timestamp.seconds * 1000);
+  const dateTime = new Date(timestamp?.seconds * 1000);
   const today = new Date().getDate();
 
   const year = dateTime.getFullYear();

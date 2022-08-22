@@ -2,32 +2,77 @@ import React from "react";
 import IconButton from "../IconButton/IconButton";
 import "./PhotoViewer.css";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
-import { getDoc, doc, setDoc } from "firebase/firestore";
-import { ref, deleteObject } from "firebase/storage";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { IoCloudDownload } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
-import { db, storage } from "../../firebase";
-import { GlobalPropsType, PhotoType } from "../../types";
+import { AlbumType, GlobalPropsType, PhotoType } from "../../types";
 import { withGlobalProps } from "../../hoc";
+import { formatTimeStamp } from "../../utils";
+import { Button } from "semantic-ui-react";
+import { setAlbum } from "../../actions";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { ref, deleteObject } from "firebase/storage";
+import { db, storage } from "../../firebase";
 interface PropsType {
   globalProps: GlobalPropsType;
 }
 interface StateType {
-  photo?: PhotoType;
+  currentIndex: number;
+  previewPhotos: Array<PhotoType>;
 }
 class PhotoViewer extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props);
-    this.state = {};
+    this.state = { previewPhotos: [], currentIndex: 0 };
   }
+
+  componentDidUpdate(prevProps: PropsType, prevState: StateType) {
+    // const { album, albumPhotos } = this.props.globalProps;
+    // const previewPhotos =
+    //   album.albumName === "RECENT"
+    //     ? albumPhotos.recent
+    //     : album.albumName === "FAVORITES"
+    //     ? albumPhotos.favorites
+    //     : albumPhotos.all;
+    // const currentIndex: number = previewPhotos
+    //   .map((p) => p.id)
+    //   .indexOf(album.current?.id as any);
+    // if (currentIndex !== prevState.currentIndex) {
+    //   this.setState((s) => ({
+    //     ...s,
+    //     previewPhotos,
+    //     currentIndex,
+    //   }));
+    // }
+  }
+
+  componentDidMount = () => {
+    const { album, albumPhotos } = this.props.globalProps;
+    const previewPhotos =
+      album.albumName === "RECENT"
+        ? albumPhotos.recent
+        : album.albumName === "FAVORITES"
+        ? albumPhotos.favorites
+        : albumPhotos.all;
+
+    const currentIndex: number = previewPhotos
+      .map((p) => p.id)
+      .indexOf(album.current?.id as any);
+    this.setState((s) => ({
+      ...s,
+      previewPhotos,
+      currentIndex,
+    }));
+  };
+
   handleFavorite = async () => {
     const {
       props: {
         globalProps: { user },
       },
-      state: { photo },
+      state: { currentIndex, previewPhotos },
     } = this;
+    const photo: PhotoType = previewPhotos[currentIndex];
     this.setState((s) => ({ ...s, loading: true }));
     const docSnap = await getDoc(doc(db, "users", user?.uid as any));
     const photos = docSnap.data()?.photos;
@@ -54,8 +99,9 @@ class PhotoViewer extends React.Component<PropsType, StateType> {
       props: {
         globalProps: { user },
       },
-      state: { photo },
+      state: { currentIndex, previewPhotos },
     } = this;
+    const photo: PhotoType = previewPhotos[currentIndex];
     this.setState((s) => ({ ...s, loading: true }));
     const docSnap = await getDoc(doc(db, "users", user?.uid as any));
     const photos = docSnap.data()?.photos;
@@ -83,6 +129,7 @@ class PhotoViewer extends React.Component<PropsType, StateType> {
         globalProps: { user },
       },
     } = this;
+
     // delete file in storage
     this.setState((s) => ({ ...s, loading: true }));
     const docSnap = await getDoc(doc(db, "users", user?.uid as any));
@@ -111,40 +158,83 @@ class PhotoViewer extends React.Component<PropsType, StateType> {
     // const { url, name, id } = this.props.photo;
     // await downloadImage(url, name || id.substring(0, 10) + ".jpg");
   };
+
+  next = () => {
+    const {
+      state: { currentIndex, previewPhotos },
+    } = this;
+    if (currentIndex + 1 !== previewPhotos.length) {
+      this.setState((s) => ({ ...s, currentIndex: currentIndex + 1 }));
+    }
+  };
+  prev = () => {
+    const {
+      state: { currentIndex },
+    } = this;
+    if (currentIndex !== 0) {
+      this.setState((s) => ({ ...s, currentIndex: currentIndex - 1 }));
+    }
+  };
   render() {
     const {
-      state: { photo },
+      state: { currentIndex, previewPhotos },
+      props: {
+        globalProps: { dispatch },
+      },
+      prev,
+      next,
       handleDelete,
       handleDownload,
       handleFavorite,
       handleUnFavorite,
     } = this;
+    const photo: PhotoType = previewPhotos[currentIndex];
     return (
       <div className="photo__viewer">
         <div className="photo__viewer__main">
+          <Button
+            primary
+            fluid
+            className="photo__viewer__main__btn"
+            onClick={() => {
+              const alb: AlbumType = {
+                albumName: "RECENT",
+                current: undefined,
+              };
+              dispatch(setAlbum(alb));
+            }}
+          >
+            CLOSE
+          </Button>
           <div className="photo__viewer__header">
             <h1>Recent Photos</h1>
-            <p>1/3</p>
+            <p>
+              {currentIndex + 1}/{previewPhotos.length} photo(s)
+            </p>
           </div>
           <IconButton
             title="previous"
             Icon={BiChevronLeft}
+            disabled={currentIndex === 0}
+            onClick={prev}
             classes="photo__viewer__icon__btn"
           />
           <IconButton
             title="next"
-            disabled
+            onClick={next}
+            disabled={currentIndex + 1 === previewPhotos.length}
             Icon={BiChevronRight}
             classes="photo__viewer__icon__btn photo__viewer__icon__btn--next"
           />
           <div className="photo__viewer__body">
-            <img src="/1.jpg" alt="viewer" />
+            <img src={photo?.url} alt={photo?.name} />
           </div>
           <div className="photo__viewer__footer">
             <div className="photo__viewer__footer__info">
+              <h1>{photo?.name}</h1>
               <p>
                 <span>uploaded:</span>
-                <strong>today</strong>
+                <strong>{formatTimeStamp(photo?.timestamp)}</strong>
               </p>
             </div>
             <div className="photo__viewer__footer__controls">
@@ -152,24 +242,28 @@ class PhotoViewer extends React.Component<PropsType, StateType> {
                 <IconButton
                   Icon={AiFillHeart}
                   title="unfavorite"
+                  classes="photo__viewer__footer__controls__icon__btn"
                   onClick={handleUnFavorite}
                 />
               ) : (
                 <IconButton
                   Icon={AiOutlineHeart}
                   title="favorite"
+                  classes="photo__viewer__footer__controls__icon__btn"
                   onClick={handleFavorite}
                 />
               )}
               <IconButton
                 Icon={MdDelete}
                 title="delete"
+                classes="photo__viewer__footer__controls__icon__btn"
                 onClick={handleDelete}
               />
               <IconButton
                 Icon={IoCloudDownload}
                 title="download"
                 onClick={handleDownload}
+                classes="photo__viewer__footer__controls__icon__btn"
               />
             </div>
           </div>
