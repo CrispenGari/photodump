@@ -7,11 +7,12 @@ export const withGlobalProps = (Component: any) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state: StateType) => state.user);
+    const album = useSelector((state: StateType) => state.album);
     const params = useParams();
     return (
       <Component
         {...props}
-        globalProps={{ location, navigate, params, user, dispatch }}
+        globalProps={{ location, navigate, params, user, dispatch, album }}
       />
     );
   }

@@ -7,8 +7,13 @@ export interface ActionType {
   payload: any;
 }
 
+export interface AlbumType {
+  current?: PhotoType;
+  albumName: "RECENT" | "FAVORITES" | "ALL";
+}
 export interface StateType {
   user: UserType;
+  album: AlbumType;
 }
 
 export interface GlobalPropsType {
@@ -17,6 +22,7 @@ export interface GlobalPropsType {
   params: Readonly<Params<string>>;
   dispatch: Dispatch<AnyAction>;
   user: UserType | null;
+  album: AlbumType;
 }
 
 export interface ErrorType {

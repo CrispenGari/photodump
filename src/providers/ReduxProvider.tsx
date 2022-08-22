@@ -2,7 +2,7 @@ import React from "react";
 
 import { Provider } from "react-redux";
 import { legacy_createStore } from "redux";
-import rootReducers from "../reducers";
+import { rootReducers } from "../reducers";
 
 const store = legacy_createStore(rootReducers);
 interface PropsType {

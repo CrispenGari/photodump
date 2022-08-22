@@ -118,7 +118,6 @@ class Photo extends React.Component<PropsType, StateType> {
     const { url, name, id } = this.props.photo;
     await downloadImage(url, name || id.substring(0, 10) + ".jpg");
   };
-
   render() {
     const {
       props: {

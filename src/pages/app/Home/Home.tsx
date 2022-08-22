@@ -5,9 +5,14 @@ import {
   Recents,
   UploadForm,
   Footer,
+  PhotoViewer,
 } from "../../../components";
+import { withGlobalProps } from "../../../hoc";
+import { GlobalPropsType } from "../../../types";
 import "./Home.css";
-interface PropsType {}
+interface PropsType {
+  globalProps: GlobalPropsType;
+}
 interface StateType {
   openModal: true | false;
 }
@@ -28,11 +33,19 @@ class Home extends React.Component<PropsType, StateType> {
   }
 
   render() {
-    const { state, toggleModal } = this;
+    const {
+      state,
+      toggleModal,
+      props: {
+        globalProps: { album },
+      },
+    } = this;
+    console.log(album);
     return (
       <div className="home">
         <Header openModal={() => toggleModal(true)} />
         {state.openModal && <UploadForm closeForm={() => toggleModal(false)} />}
+        {album.current && <PhotoViewer />}
         <div className="home__main">
           <Albums />
           <Recents />
@@ -43,4 +56,4 @@ class Home extends React.Component<PropsType, StateType> {
   }
 }
 
-export default Home;
+export default withGlobalProps(Home);

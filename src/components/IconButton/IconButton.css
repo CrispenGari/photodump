@@ -20,3 +20,7 @@
 .icon__button:hover {
   background-color: var(--color-green);
 }
+.icon__button--disabled {
+  cursor: default !important;
+  background-color: var(--color-gray) !important;
+}

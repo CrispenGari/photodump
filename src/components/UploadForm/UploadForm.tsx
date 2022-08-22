@@ -58,7 +58,7 @@ class UploadForm extends React.Component<PropsType, StateType> {
     }));
   };
 
-  onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const {
       state: { files },
@@ -66,67 +66,78 @@ class UploadForm extends React.Component<PropsType, StateType> {
         globalProps: { user },
       },
     } = this;
-    if (files.length > 0 && user) {
-      for (let i = 0; i < files.length; i++) {
-        this.setState((state) => ({ ...state, progress: true }));
-        const { fileName, base64 } = files[i];
-        const _fileName = uuid_v4().slice(0, 10) + "." + fileName.split(".")[1];
-        const storageRef = ref(storage, `images/${_fileName}`);
-        const uploadTask = uploadBytesResumable(
-          storageRef,
-          dataURLtoFile(base64, fileName)
-        );
+    (async () => {
+      if (files.length > 0 && user) {
+        for (let i = 0; i < files.length; i++) {
+          this.setState((state) => ({ ...state, progress: true }));
+          const { fileName, base64 } = files[i];
+          const _fileName =
+            uuid_v4().slice(0, 10) + "." + fileName.split(".")[1];
+          const storageRef = ref(storage, `images/${_fileName}`);
+          const uploadTask = uploadBytesResumable(
+            storageRef,
+            dataURLtoFile(base64, fileName)
+          );
 
-        await uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log(progress);
-          },
-          (error) => {
-            console.log(error);
-          },
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
-              const photo: PhotoType = {
-                favoured: false,
-                id: uuid_v4(),
-                timestamp: new Date(),
-                url,
-                name: _fileName,
-              };
-              const docSnap = await getDoc(doc(db, "users", user.uid));
-              const _user = {
-                id: docSnap.id,
-                data: docSnap.data(),
-              };
+          await uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+              const progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log(progress);
+            },
+            (error) => {
+              console.log(error);
+            },
+            () => {
+              getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+                const photo: PhotoType = {
+                  favoured: false,
+                  id: uuid_v4(),
+                  timestamp: new Date(),
+                  url,
+                  name: _fileName,
+                };
+                const docSnap = await getDoc(doc(db, "users", user.uid));
+                const _user = {
+                  id: docSnap.id,
+                  data: docSnap.data(),
+                };
 
-              // previous photos
-              const _photos: PhotoType[] = _user.data?.photos;
-              await setDoc(
-                doc(db, "users", user.uid),
-                {
-                  user: user,
-                  photos: [photo, ..._photos],
-                },
-                {
-                  merge: true,
-                }
-              );
-            });
-          }
-        );
-        if (files.length === i + 1) {
-          this.setState((state) => ({
-            ...state,
-            progress: false,
-            files: [],
-          }));
-          this.props.closeForm();
+                // previous photos
+                const _photos: PhotoType[] = _user.data?.photos;
+                await setDoc(
+                  doc(db, "users", user.uid),
+                  {
+                    user: user,
+                    photos: [photo, ..._photos],
+                  },
+                  {
+                    merge: true,
+                  }
+                );
+              });
+            }
+          );
         }
       }
-    }
+    })()
+      .then(() => {
+        this.setState((state) => ({
+          ...state,
+          progress: false,
+          files: [],
+        }));
+        this.props.closeForm();
+      })
+      .catch(() => {
+        this.setState((state) => ({
+          ...state,
+          progress: false,
+          files: [],
+        }));
+        this.props.closeForm();
+      });
   };
 
   render() {

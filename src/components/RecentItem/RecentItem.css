@@ -53,3 +53,19 @@
   transform: scale(1.09);
   cursor: pointer;
 }
+
+.recent__item__controls {
+  position: absolute;
+  top: 35px;
+  left: 5px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  display: none;
+  transition: all 1s;
+  z-index: 10;
+}
+.recent__item:hover > .recent__item__controls {
+  display: flex;
+}

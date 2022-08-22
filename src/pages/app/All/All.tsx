@@ -16,7 +16,6 @@ class All extends React.Component<PropsType, StateType> {
     super(props);
     this.state = { all: [] };
   }
-
   unsubscribe = () => {};
 
   componentDidMount() {
@@ -24,11 +23,9 @@ class All extends React.Component<PropsType, StateType> {
       doc(db, "users", this.props.globalProps.user?.uid as any),
       async (querySnapshot) => {
         const photos = querySnapshot.data()?.photos as any;
-        const favorites = photos?.filter((photo: PhotoType) => photo.favoured);
         this.setState((state) => ({
           ...state,
           all: photos,
-          favorites,
         }));
       }
     );

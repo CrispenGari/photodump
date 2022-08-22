@@ -5,6 +5,8 @@ interface PropsType {
   Icon: IconType;
   title: string;
   onClick?: () => void;
+  classes?: string;
+  disabled?: boolean;
 }
 interface StateType {}
 class IconButton extends React.Component<PropsType, StateType> {
@@ -14,10 +16,21 @@ class IconButton extends React.Component<PropsType, StateType> {
   }
   render() {
     const {
-      props: { title, onClick, Icon },
+      props: { title, onClick, Icon, classes, disabled },
     } = this;
     return (
-      <div className="icon__button" title={title} onClick={onClick}>
+      <div
+        className={`icon__button ${classes} ${
+          disabled ? "icon__button--disabled" : ""
+        }`}
+        title={title}
+        onClick={() => {
+          if (disabled) {
+            return;
+          }
+          if (typeof onClick !== "undefined") onClick();
+        }}
+      >
         <Icon className="icon__button__icon" />
       </div>
     );

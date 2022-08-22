@@ -1,7 +1,8 @@
 import { combineReducers } from "redux";
+import { albumReducer } from "./albumReducer";
 import { userReducer } from "./userReducer";
-const rootReducers = combineReducers({
-  user: userReducer,
-});
 
-export default rootReducers;
+export const rootReducers = combineReducers({
+  user: userReducer,
+  album: albumReducer,
+});
