@@ -8,6 +8,8 @@
   z-index: 10;
   display: flex;
   align-items: center;
+  user-select: none;
+  user-zoom: none;
 }
 p {
   color: gray;

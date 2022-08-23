@@ -9,7 +9,7 @@ export { default as Album } from "./Album/Album";
 export { default as RecentItem } from "./RecentItem/RecentItem";
 export { default as UploadForm } from "./UploadForm/UploadForm";
 export { default as ProfileCard } from "./ProfileCard/ProfileCard";
-export { default as Footer } from "./Footer/Footer";
+export { default as Footer } from "./AuthFooter/AuthFooter";
 export { default as ChangePasswordCard } from "./ChangePasswordCard/ChangePasswordCard";
 export { default as RecentLimitSetting } from "./RecentLimitSetting/RecentLimitSetting";
 export { default as ProfileLogoutButton } from "./ProfileLogoutButton/ProfileLogoutButton";

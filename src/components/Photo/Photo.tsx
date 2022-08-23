@@ -7,13 +7,13 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { IoCloudDownload } from "react-icons/io5";
 import IconButton from "../IconButton/IconButton";
-import { GlobalPropsType, PhotoType } from "../../types";
+import { AlbumType, GlobalPropsType, PhotoType } from "../../types";
 import { downloadImage, formatTimeStamp } from "../../utils";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { withGlobalProps } from "../../hoc";
-// import { deleteObject, ref } from "firebase/storage";
 import { db, storage } from "../../firebase";
 import { deleteObject, ref } from "firebase/storage";
+import { setAlbum } from "../../actions";
 
 interface PropsType {
   photo: PhotoType;
@@ -121,8 +121,10 @@ class Photo extends React.Component<PropsType, StateType> {
   render() {
     const {
       props: {
-        photo: { favoured, url, timestamp, id },
+        photo: { favoured, url, timestamp, id, name },
+        globalProps: { dispatch, location },
       },
+
       state: { loading },
       handleDelete,
       handleDownload,
@@ -136,7 +138,25 @@ class Photo extends React.Component<PropsType, StateType> {
             <div />
           </div>
         ) : null}
-        <img src={url} alt="placeholder" loading="lazy" />
+        <img
+          src={url}
+          alt="placeholder"
+          loading="lazy"
+          onClick={() => {
+            const alb: AlbumType = {
+              albumName:
+                location?.pathname === "/favorites" ? "FAVORITES" : "ALL",
+              current: {
+                id,
+                url,
+                timestamp,
+                favoured,
+                name,
+              },
+            };
+            dispatch(setAlbum(alb));
+          }}
+        />
         {favoured ? (
           <MdOutlineFavorite className="photo__icon" />
         ) : (

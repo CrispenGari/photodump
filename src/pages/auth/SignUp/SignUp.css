@@ -51,8 +51,11 @@
   }
 }
 
-@media (orientation: landscape) {
+@media only screen and (orientation: landscape) {
   .sign__up {
     overflow-y: scroll;
+  }
+  .sign__up__wrapper {
+    padding: 30px 0;
   }
 }

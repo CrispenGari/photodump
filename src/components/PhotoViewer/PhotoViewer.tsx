@@ -26,26 +26,17 @@ class PhotoViewer extends React.Component<PropsType, StateType> {
     this.state = { previewPhotos: [], currentIndex: 0 };
   }
 
-  componentDidUpdate(prevProps: PropsType, prevState: StateType) {
-    // const { album, albumPhotos } = this.props.globalProps;
-    // const previewPhotos =
-    //   album.albumName === "RECENT"
-    //     ? albumPhotos.recent
-    //     : album.albumName === "FAVORITES"
-    //     ? albumPhotos.favorites
-    //     : albumPhotos.all;
-    // const currentIndex: number = previewPhotos
-    //   .map((p) => p.id)
-    //   .indexOf(album.current?.id as any);
-    // if (currentIndex !== prevState.currentIndex) {
-    //   this.setState((s) => ({
-    //     ...s,
-    //     previewPhotos,
-    //     currentIndex,
-    //   }));
-    // }
-  }
-
+  handleKey = ({ key, code }: KeyboardEvent) => {
+    if (key === "Escape" && code === "Escape") {
+      this.close();
+    } else if (key === "ArrowRight" && code === "ArrowRight") {
+      this.next();
+    } else if (key === "ArrowLeft" && code === "ArrowLeft") {
+      this.prev();
+    } else {
+      return;
+    }
+  };
   componentDidMount = () => {
     const { album, albumPhotos } = this.props.globalProps;
     const previewPhotos =
@@ -63,8 +54,13 @@ class PhotoViewer extends React.Component<PropsType, StateType> {
       previewPhotos,
       currentIndex,
     }));
+
+    window.document.addEventListener("keydown", this.handleKey, false);
   };
 
+  componentWillUnmount = () => {
+    window.document.removeEventListener("keydown", this.handleKey, false);
+  };
   handleFavorite = async () => {
     const {
       props: {
@@ -73,6 +69,7 @@ class PhotoViewer extends React.Component<PropsType, StateType> {
       state: { currentIndex, previewPhotos },
     } = this;
     const photo: PhotoType = previewPhotos[currentIndex];
+    console.log(photo.id);
     this.setState((s) => ({ ...s, loading: true }));
     const docSnap = await getDoc(doc(db, "users", user?.uid as any));
     const photos = docSnap.data()?.photos;
@@ -82,6 +79,7 @@ class PhotoViewer extends React.Component<PropsType, StateType> {
       }
       return p;
     });
+
     await setDoc(
       doc(db, "users", user?.uid as string),
       {
@@ -175,17 +173,27 @@ class PhotoViewer extends React.Component<PropsType, StateType> {
       this.setState((s) => ({ ...s, currentIndex: currentIndex - 1 }));
     }
   };
+
+  close = () => {
+    const { dispatch } = this.props.globalProps;
+    const alb: AlbumType = {
+      albumName: "RECENT",
+      current: undefined,
+    };
+    dispatch(setAlbum(alb));
+  };
   render() {
     const {
       state: { currentIndex, previewPhotos },
-      props: {
-        globalProps: { dispatch },
-      },
       prev,
       next,
       handleDelete,
       handleDownload,
       handleFavorite,
+      close,
+      props: {
+        globalProps: { album },
+      },
       handleUnFavorite,
     } = this;
     const photo: PhotoType = previewPhotos[currentIndex];
@@ -196,18 +204,12 @@ class PhotoViewer extends React.Component<PropsType, StateType> {
             primary
             fluid
             className="photo__viewer__main__btn"
-            onClick={() => {
-              const alb: AlbumType = {
-                albumName: "RECENT",
-                current: undefined,
-              };
-              dispatch(setAlbum(alb));
-            }}
+            onClick={close}
           >
             CLOSE
           </Button>
           <div className="photo__viewer__header">
-            <h1>Recent Photos</h1>
+            <h1>{album.albumName} Photos</h1>
             <p>
               {currentIndex + 1}/{previewPhotos.length} photo(s)
             </p>
@@ -237,7 +239,7 @@ class PhotoViewer extends React.Component<PropsType, StateType> {
                 <strong>{formatTimeStamp(photo?.timestamp)}</strong>
               </p>
             </div>
-            <div className="photo__viewer__footer__controls">
+            <div className="photo__viewer__footer__controls" hidden>
               {photo?.favoured ? (
                 <IconButton
                   Icon={AiFillHeart}

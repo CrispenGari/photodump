@@ -1,6 +1,6 @@
 import { onSnapshot, doc } from "firebase/firestore";
 import React from "react";
-import { Footer, Header, Photo } from "../../../components";
+import { Footer, Header, Photo, PhotoViewer } from "../../../components";
 import { db } from "../../../firebase";
 import { withGlobalProps } from "../../../hoc";
 import { GlobalPropsType, PhotoType } from "../../../types";
@@ -42,12 +42,21 @@ class Favorites extends React.Component<PropsType, StateType> {
   render() {
     const {
       state: { favorites },
+      props: {
+        globalProps: { album },
+      },
     } = this;
     return (
       <div className="favorites">
         <Header openModal={() => {}} />
+        {album.current && <PhotoViewer />}
         <div className="favorites__main">
-          <h1>Favorites</h1>
+          <h1>
+            <span>Favorites</span>
+            <span>
+              <strong>{favorites.length}</strong> picture(s)
+            </span>
+          </h1>
           <div className="favorites__main__photos">
             {favorites.map((photo) => (
               <Photo key={photo.id} photo={photo} />

@@ -2,6 +2,7 @@ import { updateProfile } from "firebase/auth";
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import React from "react";
+import { FileUploader } from "react-drag-drop-files";
 import { Link } from "react-router-dom";
 import { Button, Icon, Input, Form, Card, Message } from "semantic-ui-react";
 import { auth, db, storage } from "../../firebase";
@@ -39,7 +40,7 @@ class ProfileCard extends React.Component<PropsType, StateType> {
   }
   unsubscribe = () => {};
 
-  inputRef = React.createRef();
+  selectBtnRef = React.createRef();
 
   componentDidMount() {
     this.unsubscribe = onSnapshot(
@@ -72,26 +73,24 @@ class ProfileCard extends React.Component<PropsType, StateType> {
     await this.updateInfo();
   };
   onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, name, files } = e.target;
-    if (name === "profile") {
+    const { value, name } = e.target;
+    this.setState((state) => ({
+      ...state,
+      [name]: value,
+    }));
+  };
+
+  handleFileChange = async (file: any) => {
+    if (file) {
       this.setState((s) => ({
         ...s,
         profileLoading: true,
       }));
-      const file = files ? files[0] : null;
-      if (!file) {
-        return;
-      }
       const _file = await getBase64(file);
       this.setState((state) => ({
         ...state,
         profileImage: _file as any,
         profileLoading: false,
-      }));
-    } else {
-      this.setState((state) => ({
-        ...state,
-        [name]: value,
       }));
     }
   };
@@ -192,21 +191,14 @@ class ProfileCard extends React.Component<PropsType, StateType> {
         profileLoading,
         phoneNumber,
       },
-      inputRef,
+      selectBtnRef,
       updateProfilePicture,
+      handleFileChange,
       props: { readonly },
     } = this;
     return (
       <div className="profile__card">
         <Form className="profile__card__image" loading={profileLoading}>
-          <input
-            hidden
-            type="file"
-            accept="images/*"
-            ref={inputRef as any}
-            name="profile"
-            onChange={onChange}
-          />
           <img
             src={profileImage ? profileImage : "/profile.jpg"}
             alt="profile"
@@ -214,7 +206,7 @@ class ProfileCard extends React.Component<PropsType, StateType> {
               if (readonly) {
                 return;
               } else {
-                (inputRef.current as any).click();
+                (selectBtnRef.current as any)?.click();
               }
             }}
           />
@@ -222,19 +214,25 @@ class ProfileCard extends React.Component<PropsType, StateType> {
             <></>
           ) : profileImage?.startsWith("data:image/") ? (
             <>
-              <Button
-                secondary
-                fluid
-                type="button"
-                onClick={() => {
-                  (inputRef.current as any).click();
-                }}
-                style={{
-                  marginBottom: 5,
-                }}
-              >
-                select
-              </Button>
+              <FileUploader
+                handleChange={(files: any) => handleFileChange(files)}
+                name="file"
+                types={["jpeg", "png", "jpg", "webp", "gif"]}
+                multiple={false}
+                children={
+                  <Button
+                    secondary
+                    fluid
+                    type="button"
+                    style={{
+                      marginBottom: 5,
+                    }}
+                    ref={selectBtnRef as any}
+                  >
+                    re-select
+                  </Button>
+                }
+              />
               <Button
                 secondary
                 fluid
@@ -261,16 +259,24 @@ class ProfileCard extends React.Component<PropsType, StateType> {
               </Button>
             </>
           ) : (
-            <Button
-              primary
-              fluid
-              type="button"
-              onClick={() => {
-                (inputRef.current as any).click();
-              }}
-            >
-              select
-            </Button>
+            <FileUploader
+              handleChange={(files: any) => handleFileChange(files)}
+              name="file"
+              types={["jpeg", "png", "jpg", "webp", "gif"]}
+              multiple={false}
+              children={
+                <Button
+                  primary
+                  fluid
+                  type="button"
+                  style={{
+                    marginBottom: 5,
+                  }}
+                >
+                  select
+                </Button>
+              }
+            />
           )}
         </Form>
         <Form
@@ -334,6 +340,7 @@ class ProfileCard extends React.Component<PropsType, StateType> {
             <div className="profile__card__info__buttons">
               <Button
                 primary
+                type="button"
                 onClick={() => {
                   this.setState((state) => ({
                     ...state,

@@ -53,6 +53,9 @@
 .profile__card__info__buttons > button:first-of-type {
   margin-right: 20px;
 }
+.profile__card__image__img {
+  display: none !important;
+}
 
 @media only screen and (max-width: 768px) {
   .profile__card {

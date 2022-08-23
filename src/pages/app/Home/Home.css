@@ -1,10 +1,12 @@
 .home {
   width: 100vw;
   height: 100vh;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative !important;
   overflow-x: hidden;
+  overflow-y: hidden;
   max-height: 100vh;
 }
 .home__main {
@@ -14,4 +16,5 @@
   width: 100%;
   max-width: 1000px;
   margin: 0px auto;
+  overflow-x: scroll;
 }

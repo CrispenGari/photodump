@@ -15,4 +15,5 @@
 }
 .profile__logout__button > h1 {
   font-size: 1rem;
+  text-transform: uppercase;
 }

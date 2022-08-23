@@ -15,7 +15,7 @@
   border-bottom: 1px solid var(--color-green);
   text-transform: uppercase;
   width: 100%;
-  padding: 5px 0;
+  padding: 20px 0 !important;
 }
 
 .recents__container {

@@ -1,6 +1,6 @@
 import { onSnapshot, doc } from "firebase/firestore";
 import React from "react";
-import { Footer, Header, Photo } from "../../../components";
+import { Footer, Header, Photo, PhotoViewer } from "../../../components";
 import { db } from "../../../firebase";
 import { withGlobalProps } from "../../../hoc";
 import { GlobalPropsType, PhotoType } from "../../../types";
@@ -39,12 +39,21 @@ class All extends React.Component<PropsType, StateType> {
   render() {
     const {
       state: { all },
+      props: {
+        globalProps: { album },
+      },
     } = this;
     return (
       <div className="all">
         <Header openModal={() => {}} />
+        {album.current && <PhotoViewer />}
         <div className="all__main">
-          <h1>All</h1>
+          <h1>
+            <span>All</span>
+            <span>
+              <strong>{all.length}</strong> picture(s)
+            </span>
+          </h1>
           <div className="all__main__photos">
             {all.map((photo) => (
               <Photo key={photo.id} photo={photo} />

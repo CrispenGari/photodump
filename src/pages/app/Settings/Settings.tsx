@@ -35,7 +35,6 @@ class Settings extends React.Component<PropsType, StateType> {
           <ForgotPassword />
           <RecentLimitSetting />
           <DeleteAccountSetting />
-
           <ProfileLogoutButton />
         </div>
         <Footer />

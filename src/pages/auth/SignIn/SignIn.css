@@ -53,3 +53,11 @@
     border: none !important;
   }
 }
+@media only screen and (orientation: landscape) {
+  .sign__in {
+    overflow-y: scroll;
+  }
+  .sign__in__wrapper {
+    padding: 30px 0;
+  }
+}

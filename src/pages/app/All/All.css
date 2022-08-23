@@ -30,6 +30,14 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  display: flex;
+  justify-content: space-between;
+}
+.all__main > h1 > span:last-of-type {
+  font-weight: normal;
+  color: gray !important;
+  font-size: 0.9rem;
+  text-transform: lowercase !important;
 }
 .all__main__photos {
   flex: 1;

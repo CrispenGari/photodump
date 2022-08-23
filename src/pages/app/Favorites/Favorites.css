@@ -29,7 +29,15 @@
   user-zoom: none;
   position: sticky;
   top: 0;
+  display: flex;
   z-index: 10;
+  justify-content: space-between;
+}
+.favorites__main > h1 > span:last-of-type {
+  font-weight: normal;
+  color: gray !important;
+  font-size: 0.9rem;
+  text-transform: lowercase !important;
 }
 .favorites__main__photos {
   flex: 1;

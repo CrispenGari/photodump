@@ -40,7 +40,7 @@ class Home extends React.Component<PropsType, StateType> {
         globalProps: { album },
       },
     } = this;
-    console.log(album);
+
     return (
       <div className="home">
         <Header openModal={() => toggleModal(true)} />
