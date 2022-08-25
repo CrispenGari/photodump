@@ -17,3 +17,4 @@ export { default as DeleteAccountSetting } from "./DeleteAccountSetting/DeleteAc
 export { default as ChangeEmailCard } from "./ChangeEmailCard/ChangeEmailCard";
 export { default as ForgotPassword } from "./ForgotPassword/ForgotPassword";
 export { default as AuthFooter } from "./AuthFooter/AuthFooter";
+export { default as DeletePhotos } from "./DeletePhotos/DeletePhotos";

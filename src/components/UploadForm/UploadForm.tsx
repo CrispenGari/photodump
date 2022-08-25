@@ -37,19 +37,20 @@ class UploadForm extends React.Component<PropsType, StateType> {
   handleChange = async (files: any) => {
     let _files: Array<any> = [];
     if (files) {
-      this.setState((state) => ({ ...state, progress: true }));
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const _file = await getBase64(file);
-        _files.push({
-          fileName: file.name,
-          size: file.size,
-          base64: _file,
-        });
-        if (i + 1 === files.length) {
-          this.setState((state) => ({ ...state, progress: false }));
+      (async () => {
+        this.setState((state) => ({ ...state, progress: true }));
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const _file = await getBase64(file);
+          _files.push({
+            fileName: file.name,
+            size: file.size,
+            base64: _file,
+          });
         }
-      }
+      })().then(() => {
+        this.setState((state) => ({ ...state, progress: false }));
+      });
     }
     this.setState((state) => ({
       ...state,

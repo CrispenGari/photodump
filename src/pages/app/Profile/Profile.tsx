@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  DeletePhotos,
   Footer,
   Header,
   ProfileCard,
@@ -21,6 +22,7 @@ class Profile extends React.Component<PropsType, StateType> {
         <Header openModal={() => {}} />
         <div className="profile__main">
           <ProfileCard readonly={false} />
+          <DeletePhotos />
           <ProfileLogoutButton />
         </div>
         <Footer />

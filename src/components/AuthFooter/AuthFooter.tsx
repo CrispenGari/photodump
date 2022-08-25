@@ -11,7 +11,11 @@ class AuthFooter extends React.Component<PropsType, StateType> {
   render() {
     return (
       <div className="auth__footer">
-        <p> Copyright © 2022 PhotoDump Inc. All rights reserved.</p>
+        <p>
+          {" "}
+          Copyright © {new Date().getFullYear()} PhotoDump Inc. All rights
+          reserved.
+        </p>
       </div>
     );
   }
