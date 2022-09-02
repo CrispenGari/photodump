@@ -28,7 +28,10 @@ class Recents extends React.Component<PropsType, StateType> {
       doc(db, "users", this.props.globalProps.user?.uid as any),
       async (querySnapshot) => {
         const limit = querySnapshot.data()?.settings?.recentLimit || 10;
-        const photos = querySnapshot.data()?.photos?.slice(0, limit);
+        const photos = querySnapshot
+          .data()
+          ?.photos?.filter((photo: PhotoType) => !photo.hidden)
+          ?.slice(0, limit);
         dispatch(
           setAlbumPhotos({
             album: "RECENT",
@@ -56,9 +59,7 @@ class Recents extends React.Component<PropsType, StateType> {
         <h1>Recent</h1>
         <div className="recents__container">
           {photos.length > 0
-            ? photos
-                .filter((photo) => !photo.hidden)
-                .map((photo) => <Photo key={photo.id} photo={photo} />)
+            ? photos.map((photo) => <Photo key={photo.id} photo={photo} />)
             : null}
         </div>
       </div>
