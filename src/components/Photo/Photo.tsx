@@ -19,6 +19,7 @@ import { setAlbum } from "../../actions";
 interface PropsType {
   photo: PhotoType;
   globalProps: GlobalPropsType;
+  blur?: true | false;
 }
 interface StateType {
   loading: true | false;
@@ -180,6 +181,7 @@ class Photo extends React.Component<PropsType, StateType> {
       props: {
         photo: { favoured, url, timestamp, id, name, hidden },
         globalProps: { dispatch, location },
+        blur,
       },
       state: { loading },
       handleDelete,
@@ -199,6 +201,9 @@ class Photo extends React.Component<PropsType, StateType> {
         <img
           src={url}
           alt="placeholder"
+          style={{
+            filter: `${blur ? "blur(10px)" : "blur(0)"}`,
+          }}
           loading="lazy"
           onClick={() => {
             const alb: AlbumType = {

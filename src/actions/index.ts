@@ -19,3 +19,9 @@ export const setAlbumPhotos = (payload: any) => {
     type: constants.SET_ALBUM_PHOTOS,
   };
 };
+export const setOpenHiddenPhotosAuthModal = (payload: any) => {
+  return {
+    payload,
+    type: constants.SET_OPEN_HIDDEN_PHOTOS_AUTH_MODAL,
+  };
+};

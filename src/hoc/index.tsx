@@ -9,6 +9,10 @@ export const withGlobalProps = (Component: any) => {
     const user = useSelector((state: StateType) => state.user);
     const album = useSelector((state: StateType) => state.album);
     const albumPhotos = useSelector((state: StateType) => state.albumPhotos);
+    const openHiddenPhotos = useSelector(
+      (state: StateType) => state.openHiddenPhotos
+    );
+
     const params = useParams();
     return (
       <Component
@@ -21,6 +25,7 @@ export const withGlobalProps = (Component: any) => {
           dispatch,
           album,
           albumPhotos,
+          openHiddenPhotos,
         }}
       />
     );

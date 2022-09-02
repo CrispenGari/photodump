@@ -1,9 +1,16 @@
 import { onSnapshot, doc } from "firebase/firestore";
 import React from "react";
-import { PhotoViewer, Photo, Footer, Header } from "..";
-import { db } from "../../firebase";
-import { withGlobalProps } from "../../hoc";
-import { GlobalPropsType, PhotoType } from "../../types";
+import { setOpenHiddenPhotosAuthModal } from "../../../actions";
+import {
+  PhotoViewer,
+  Photo,
+  Footer,
+  Header,
+  HiddenPhotosAuthModal,
+} from "../../../components";
+import { db } from "../../../firebase";
+import { withGlobalProps } from "../../../hoc";
+import { GlobalPropsType, PhotoType } from "../../../types";
 import "./Hidden.css";
 interface PropsType {
   globalProps: GlobalPropsType;
@@ -21,6 +28,9 @@ class Hidden extends React.Component<PropsType, StateType> {
   unsubscribe = () => {};
 
   componentDidMount() {
+    const {
+      globalProps: { dispatch, openHiddenPhotos },
+    } = this.props;
     this.unsubscribe = onSnapshot(
       doc(db, "users", this.props.globalProps.user?.uid as any),
       async (querySnapshot) => {
@@ -34,6 +44,8 @@ class Hidden extends React.Component<PropsType, StateType> {
         }));
       }
     );
+    dispatch(setOpenHiddenPhotosAuthModal(true));
+    this.setState((s) => ({ ...s, authenticated: !openHiddenPhotos }));
   }
 
   componentWillUnmount() {
@@ -45,13 +57,15 @@ class Hidden extends React.Component<PropsType, StateType> {
     const {
       state: { hidden },
       props: {
-        globalProps: { album },
+        globalProps: { album, openHiddenPhotos },
       },
     } = this;
-    console.log(hidden);
+
     return (
       <div className="hidden">
         <Header openModal={() => {}} />
+        {openHiddenPhotos && <HiddenPhotosAuthModal />}
+
         {album.current && <PhotoViewer />}
         <div className="hidden__main">
           <h1>
@@ -62,7 +76,7 @@ class Hidden extends React.Component<PropsType, StateType> {
           </h1>
           <div className="hidden__main__photos">
             {hidden.map((photo) => (
-              <Photo key={photo?.id} photo={photo} />
+              <Photo key={photo?.id} photo={photo} blur={openHiddenPhotos} />
             ))}
           </div>
         </div>

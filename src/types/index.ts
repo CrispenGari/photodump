@@ -21,6 +21,7 @@ export interface StateType {
   user: UserType;
   album: AlbumType;
   albumPhotos: AllPhotosType;
+  openHiddenPhotos: boolean;
 }
 
 export interface GlobalPropsType {
@@ -31,6 +32,7 @@ export interface GlobalPropsType {
   user: UserType | null;
   album: AlbumType;
   albumPhotos: AllPhotosType;
+  openHiddenPhotos: boolean;
 }
 
 export interface ErrorType {
