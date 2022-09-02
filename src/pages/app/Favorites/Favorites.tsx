@@ -1,5 +1,6 @@
 import { onSnapshot, doc } from "firebase/firestore";
 import React from "react";
+import { Link } from "react-router-dom";
 import { Footer, Header, Photo, PhotoViewer } from "../../../components";
 import { db } from "../../../firebase";
 import { withGlobalProps } from "../../../hoc";
@@ -56,6 +57,9 @@ class Favorites extends React.Component<PropsType, StateType> {
             <span>
               <strong>{favorites.length}</strong> picture(s)
             </span>
+            <Link to={"/hidden"}>
+              <strong>{favorites.filter((p) => p.hidden).length}</strong> hidden
+            </Link>
           </h1>
           <div className="favorites__main__photos">
             {favorites

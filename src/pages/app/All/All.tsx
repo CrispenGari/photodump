@@ -1,5 +1,6 @@
 import { onSnapshot, doc } from "firebase/firestore";
 import React from "react";
+import { Link } from "react-router-dom";
 import { Footer, Header, Photo, PhotoViewer } from "../../../components";
 import { db } from "../../../firebase";
 import { withGlobalProps } from "../../../hoc";
@@ -53,6 +54,9 @@ class All extends React.Component<PropsType, StateType> {
             <span>
               <strong>{all.length}</strong> picture(s)
             </span>
+            <Link to={"/hidden"}>
+              <strong>{all.filter((p) => p.hidden).length}</strong> hidden
+            </Link>
           </h1>
           <div className="all__main__photos">
             {all

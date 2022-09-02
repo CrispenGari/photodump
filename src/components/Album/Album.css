@@ -60,3 +60,8 @@
 .album__item__hidden .album__item__cover {
   filter: blur(10px) !important;
 }
+
+@media only screen and (max-width: 900px) and (orientation: landscape) {
+  .album__item {
+  }
+}

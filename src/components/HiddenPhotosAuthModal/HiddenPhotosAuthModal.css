@@ -33,3 +33,20 @@
 .hidden__photos__auth__modal__form__input {
   margin-bottom: 5px;
 }
+.hidden__photos__auth__modal__form__navs {
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  user-zoom: none;
+  padding: 10px 0;
+}
+.hidden__photos__auth__modal__form__navs > p {
+  color: gray;
+  margin-bottom: 10px !important;
+  width: 100%;
+  text-align: center;
+}
+.hidden__photos__auth__modal__form__navs > div {
+  display: flex;
+  justify-content: space-between;
+}

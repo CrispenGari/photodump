@@ -45,3 +45,7 @@
   margin-right: 10px;
   cursor: pointer;
 }
+.hidden__item__setting > button {
+  width: fit-content !important;
+  margin-top: 10px !important;
+}

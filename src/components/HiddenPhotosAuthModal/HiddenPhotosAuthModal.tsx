@@ -1,5 +1,6 @@
 import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 import React from "react";
+import { Link } from "react-router-dom";
 import { Button, Form, Icon, Input, Message } from "semantic-ui-react";
 import { setOpenHiddenPhotosAuthModal } from "../../actions";
 import { auth } from "../../firebase";
@@ -104,7 +105,6 @@ class HiddenPhotosAuthModal extends React.Component<PropsType, StateType> {
             onChange={onChange}
             className="hidden__photos__auth__modal__form__input"
           />
-
           {error?.value && (
             <Message negative>
               <p>{error ? error.value : ""}</p>
@@ -113,6 +113,14 @@ class HiddenPhotosAuthModal extends React.Component<PropsType, StateType> {
           <Button color="green" fluid type="submit">
             Open
           </Button>
+          <div className="hidden__photos__auth__modal__form__navs">
+            <p>OR NAVIGATE</p>
+            <div>
+              <Link to="/">HOME</Link>
+              <Link to="/all">ALL PHOTOS</Link>
+              <Link to="/favorites">FAVORITES</Link>
+            </div>
+          </div>
         </Form>
       </div>
     );

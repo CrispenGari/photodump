@@ -368,6 +368,12 @@ class ProfileCard extends React.Component<PropsType, StateType> {
                 {favorites?.length} Favorites
               </Link>
             </Card.Content>
+            <Card.Content extra>
+              <Link to="/hidden">
+                <Icon name="eye slash" />
+                {all.filter((p) => p.hidden)?.length} Hidden
+              </Link>
+            </Card.Content>
           </Card>
         </Form>
       </div>

@@ -39,6 +39,9 @@
   font-size: 0.9rem;
   text-transform: lowercase !important;
 }
+.favorites__main > h1 > a {
+  text-transform: lowercase !important;
+}
 .favorites__main__photos {
   flex: 1;
   display: flex;
