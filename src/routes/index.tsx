@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes as R, Route } from "react-router-dom";
-import { All, Favorites, Home, Profile, Settings } from "../pages/app";
+import { All, Favorites, Home, Profile, Settings, Hidden } from "../pages/app";
 import { SignIn, SignUp, Welcome } from "../pages/auth";
 import { NotFound, ResetPassword } from "../pages/common";
 
@@ -19,6 +19,7 @@ export class Routes extends React.Component<PropsType, StateType> {
           <Route path="/profile" caseSensitive element={<Profile />} />
           <Route path="/all" caseSensitive element={<All />} />
           <Route path="/favorites" caseSensitive element={<Favorites />} />
+          <Route path="/hidden" caseSensitive element={<Hidden />} />
           <Route path="*" element={<NotFound />} caseSensitive />
         </R>
       );

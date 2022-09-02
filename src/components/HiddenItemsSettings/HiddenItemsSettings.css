@@ -1,0 +1,47 @@
+.hidden__item__setting {
+  display: flex;
+  margin: 2px auto;
+  background-color: white;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  user-select: none;
+  user-zoom: none;
+  flex-direction: column;
+}
+
+.hidden__item__setting > h1 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  padding: 10px 0;
+  border-bottom: 1px solid lightgray;
+}
+.hidden__item__setting__inputs {
+  display: flex;
+}
+.hidden__item__setting__inputs > button {
+  margin-left: 10px !important;
+}
+.hidden__item__message {
+  display: flex !important;
+  flex-direction: column !important;
+  margin: 5px auto;
+}
+.hidden__item__message > p {
+  margin: 0 !important;
+}
+
+.hidden__item__setting__inputs {
+  display: flex;
+  flex-direction: column;
+}
+.hidden__item__setting__inputs > label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 2px 0;
+}
+.hidden__item__setting__inputs > label > input {
+  margin-right: 10px;
+  cursor: pointer;
+}

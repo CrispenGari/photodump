@@ -58,9 +58,11 @@ class Favorites extends React.Component<PropsType, StateType> {
             </span>
           </h1>
           <div className="favorites__main__photos">
-            {favorites.map((photo) => (
-              <Photo key={photo.id} photo={photo} />
-            ))}
+            {favorites
+              .filter((p) => !p.hidden)
+              .map((photo) => (
+                <Photo key={photo.id} photo={photo} />
+              ))}
           </div>
         </div>
         <Footer />

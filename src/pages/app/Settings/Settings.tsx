@@ -9,6 +9,7 @@ import {
   ProfileCard,
   ProfileLogoutButton,
   RecentLimitSetting,
+  HiddenItemsSetting,
 } from "../../../components";
 import { withGlobalProps } from "../../../hoc";
 import { GlobalPropsType } from "../../../types";
@@ -34,6 +35,7 @@ class Settings extends React.Component<PropsType, StateType> {
           <ChangePasswordCard />
           <ForgotPassword />
           <RecentLimitSetting />
+          <HiddenItemsSetting />
           <DeleteAccountSetting />
           <ProfileLogoutButton />
         </div>

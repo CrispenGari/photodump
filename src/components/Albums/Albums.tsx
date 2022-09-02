@@ -1,6 +1,7 @@
 import React from "react";
 import { Album } from "../../components";
 import { MdOutlineFavorite } from "react-icons/md";
+import { FaRegEyeSlash } from "react-icons/fa";
 import { IoMdPhotos } from "react-icons/io";
 import "./Albums.css";
 import { PhotoType, GlobalPropsType } from "../../types";
@@ -15,6 +16,7 @@ interface PropsType {
 interface StateType {
   favorites: Array<PhotoType>;
   all: Array<PhotoType>;
+  hidden: Array<PhotoType>;
 }
 class Albums extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
@@ -22,6 +24,7 @@ class Albums extends React.Component<PropsType, StateType> {
     this.state = {
       favorites: [],
       all: [],
+      hidden: [],
     };
   }
 
@@ -34,6 +37,7 @@ class Albums extends React.Component<PropsType, StateType> {
       async (querySnapshot) => {
         const photos = querySnapshot.data()?.photos as any;
         const favorites = photos?.filter((photo: PhotoType) => photo.favoured);
+        const hidden = photos?.filter((photo: PhotoType) => photo.hidden);
         dispatch(
           setAlbumPhotos({
             album: "ALL",
@@ -46,10 +50,17 @@ class Albums extends React.Component<PropsType, StateType> {
             photos: favorites,
           })
         );
+        dispatch(
+          setAlbumPhotos({
+            album: "HIDDEN",
+            photos: hidden,
+          })
+        );
         this.setState((state) => ({
           ...state,
           all: photos,
           favorites,
+          hidden,
         }));
       }
     );
@@ -62,7 +73,7 @@ class Albums extends React.Component<PropsType, StateType> {
   }
   render() {
     const {
-      state: { favorites, all },
+      state: { favorites, all, hidden },
       props: {
         globalProps: { navigate },
       },
@@ -85,6 +96,13 @@ class Albums extends React.Component<PropsType, StateType> {
             itemsCount={favorites.length}
             title="Favorites"
             coverUrl={favorites.length === 0 ? "/1.jpg" : favorites[0].url}
+          />
+          <Album
+            Icon={FaRegEyeSlash}
+            onClick={() => navigate("/hidden")}
+            itemsCount={hidden.length}
+            title="Hidden"
+            coverUrl={hidden.length === 0 ? "/1.jpg" : hidden[0].url}
           />
         </div>
       </div>

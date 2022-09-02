@@ -4,7 +4,8 @@ import { setAlbumPhotos } from "../../actions";
 import { db } from "../../firebase";
 import { withGlobalProps } from "../../hoc";
 import { GlobalPropsType, PhotoType } from "../../types";
-import RecentItem from "../RecentItem/RecentItem";
+import Photo from "../Photo/Photo";
+
 import "./Recents.css";
 interface PropsType {
   globalProps: GlobalPropsType;
@@ -34,6 +35,7 @@ class Recents extends React.Component<PropsType, StateType> {
             photos,
           })
         );
+
         this.setState((state) => ({
           ...state,
           photos,
@@ -54,7 +56,9 @@ class Recents extends React.Component<PropsType, StateType> {
         <h1>Recent</h1>
         <div className="recents__container">
           {photos.length > 0
-            ? photos.map((photo) => <RecentItem key={photo.id} photo={photo} />)
+            ? photos
+                .filter((photo) => !photo.hidden)
+                .map((photo) => <Photo key={photo.id} photo={photo} />)
             : null}
         </div>
       </div>

@@ -5,6 +5,7 @@ export const albumPhotosReducer = (
     all: [],
     favorites: [],
     recent: [],
+    hidden: [],
   },
   { type, payload }: ActionType
 ) => {
@@ -14,6 +15,8 @@ export const albumPhotosReducer = (
         return (state = { ...state, recent: payload.photos });
       } else if (payload.album === "FAVORITES") {
         return (state = { ...state, favorites: payload.photos });
+      } else if (payload.album === "HIDDEN") {
+        return (state = { ...state, hidden: payload.photos });
       } else {
         return (state = { ...state, all: payload.photos });
       }

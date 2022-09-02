@@ -11,10 +11,11 @@ export interface AllPhotosType {
   all: PhotoType[];
   favorites: PhotoType[];
   recent: PhotoType[];
+  hidden: PhotoType[];
 }
 export interface AlbumType {
   current?: PhotoType;
-  albumName: "RECENT" | "FAVORITES" | "ALL";
+  albumName: "RECENT" | "FAVORITES" | "ALL" | "HIDDEN";
 }
 export interface StateType {
   user: UserType;
@@ -52,6 +53,7 @@ export interface PhotoType {
   favoured: true | false;
   timestamp: Date;
   name?: string;
+  hidden?: true | false;
 }
 
 export interface DocType {

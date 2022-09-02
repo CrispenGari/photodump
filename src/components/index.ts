@@ -6,7 +6,7 @@ export { default as HeaderButton } from "./HeaderButton/HeaderButton";
 export { default as Recents } from "./Recents/Recents";
 export { default as Albums } from "./Albums/Albums";
 export { default as Album } from "./Album/Album";
-export { default as RecentItem } from "./RecentItem/RecentItem";
+export { default as HiddenItemsSetting } from "./HiddenItemsSettings/HiddenItemsSettings";
 export { default as UploadForm } from "./UploadForm/UploadForm";
 export { default as ProfileCard } from "./ProfileCard/ProfileCard";
 export { default as Footer } from "./AuthFooter/AuthFooter";

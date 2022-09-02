@@ -1,20 +1,22 @@
 import { onSnapshot, doc } from "firebase/firestore";
 import React from "react";
-import { Footer, Header, Photo, PhotoViewer } from "../../../components";
-import { db } from "../../../firebase";
-import { withGlobalProps } from "../../../hoc";
-import { GlobalPropsType, PhotoType } from "../../../types";
-import "./All.css";
+import { PhotoViewer, Photo, Footer, Header } from "..";
+import { db } from "../../firebase";
+import { withGlobalProps } from "../../hoc";
+import { GlobalPropsType, PhotoType } from "../../types";
+import "./Hidden.css";
 interface PropsType {
   globalProps: GlobalPropsType;
 }
 interface StateType {
-  all: Array<PhotoType>;
+  hidden: Array<PhotoType>;
 }
-class All extends React.Component<PropsType, StateType> {
+class Hidden extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props);
-    this.state = { all: [] };
+    this.state = {
+      hidden: [],
+    };
   }
   unsubscribe = () => {};
 
@@ -23,9 +25,12 @@ class All extends React.Component<PropsType, StateType> {
       doc(db, "users", this.props.globalProps.user?.uid as any),
       async (querySnapshot) => {
         const photos = querySnapshot.data()?.photos as any;
+        const hidden: Array<PhotoType> = photos.filter(
+          (photo: PhotoType) => photo.hidden
+        );
         this.setState((state) => ({
           ...state,
-          all: photos,
+          hidden,
         }));
       }
     );
@@ -38,28 +43,27 @@ class All extends React.Component<PropsType, StateType> {
   }
   render() {
     const {
-      state: { all },
+      state: { hidden },
       props: {
         globalProps: { album },
       },
     } = this;
+    console.log(hidden);
     return (
-      <div className="all">
+      <div className="hidden">
         <Header openModal={() => {}} />
         {album.current && <PhotoViewer />}
-        <div className="all__main">
+        <div className="hidden__main">
           <h1>
-            <span>All</span>
+            <span>Hidden</span>
             <span>
-              <strong>{all.length}</strong> picture(s)
+              <strong>{hidden.length}</strong> picture(s)
             </span>
           </h1>
-          <div className="all__main__photos">
-            {all
-              .filter((p) => !p.hidden)
-              .map((photo) => (
-                <Photo key={photo.id} photo={photo} />
-              ))}
+          <div className="hidden__main__photos">
+            {hidden.map((photo) => (
+              <Photo key={photo?.id} photo={photo} />
+            ))}
           </div>
         </div>
         <Footer />
@@ -68,4 +72,4 @@ class All extends React.Component<PropsType, StateType> {
   }
 }
 
-export default withGlobalProps(All);
+export default withGlobalProps(Hidden);

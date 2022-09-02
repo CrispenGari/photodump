@@ -6,6 +6,7 @@ import { ImHistory } from "react-icons/im";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { IoCloudDownload } from "react-icons/io5";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import IconButton from "../IconButton/IconButton";
 import { AlbumType, GlobalPropsType, PhotoType } from "../../types";
 import { downloadImage, formatTimeStamp } from "../../utils";
@@ -118,18 +119,75 @@ class Photo extends React.Component<PropsType, StateType> {
     const { url, name, id } = this.props.photo;
     await downloadImage(url, name || id.substring(0, 10) + ".jpg");
   };
+  handleHide = async () => {
+    const {
+      props: {
+        globalProps: { user },
+        photo: { id },
+      },
+    } = this;
+    this.setState((s) => ({ ...s, loading: true }));
+    const docSnap = await getDoc(doc(db, "users", user?.uid as any));
+    const photos = docSnap.data()?.photos;
+    const all = photos?.map((p: PhotoType): PhotoType => {
+      if (p.id === id) {
+        return { ...p, hidden: true };
+      }
+      return p;
+    });
+    await setDoc(
+      doc(db, "users", user?.uid as string),
+      {
+        photos: all,
+      },
+      {
+        merge: true,
+      }
+    ).then(() => {
+      this.setState((s) => ({ ...s, loading: false }));
+    });
+  };
+  handleUnHide = async () => {
+    const {
+      props: {
+        globalProps: { user },
+        photo: { id },
+      },
+    } = this;
+    this.setState((s) => ({ ...s, loading: true }));
+    const docSnap = await getDoc(doc(db, "users", user?.uid as any));
+    const photos = docSnap.data()?.photos;
+    const all = photos?.map((p: PhotoType): PhotoType => {
+      if (p.id === id) {
+        return { ...p, hidden: false };
+      }
+      return p;
+    });
+    await setDoc(
+      doc(db, "users", user?.uid as string),
+      {
+        photos: all,
+      },
+      {
+        merge: true,
+      }
+    ).then(() => {
+      this.setState((s) => ({ ...s, loading: false }));
+    });
+  };
   render() {
     const {
       props: {
-        photo: { favoured, url, timestamp, id, name },
+        photo: { favoured, url, timestamp, id, name, hidden },
         globalProps: { dispatch, location },
       },
-
       state: { loading },
       handleDelete,
       handleDownload,
       handleFavorite,
       handleUnFavorite,
+      handleHide,
+      handleUnHide,
     } = this;
     return (
       <div className="photo">
@@ -145,7 +203,13 @@ class Photo extends React.Component<PropsType, StateType> {
           onClick={() => {
             const alb: AlbumType = {
               albumName:
-                location?.pathname === "/favorites" ? "FAVORITES" : "ALL",
+                location?.pathname === "/favorites"
+                  ? "FAVORITES"
+                  : location?.pathname === "/all"
+                  ? "ALL"
+                  : location?.pathname === "/hidden"
+                  ? "HIDDEN"
+                  : "RECENT",
               current: {
                 id,
                 url,
@@ -178,6 +242,16 @@ class Photo extends React.Component<PropsType, StateType> {
             />
           )}
           <IconButton Icon={MdDelete} title="delete" onClick={handleDelete} />
+          {!hidden ? (
+            <IconButton Icon={FaRegEye} title="un hide" onClick={handleHide} />
+          ) : (
+            <IconButton
+              Icon={FaRegEyeSlash}
+              title="hide"
+              onClick={handleUnHide}
+            />
+          )}
+
           <IconButton
             Icon={IoCloudDownload}
             title="download"

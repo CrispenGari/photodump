@@ -38,17 +38,28 @@ class PhotoViewer extends React.Component<PropsType, StateType> {
     }
   };
   componentDidMount = () => {
-    const { album, albumPhotos } = this.props.globalProps;
-    const previewPhotos =
-      album.albumName === "RECENT"
-        ? albumPhotos.recent
-        : album.albumName === "FAVORITES"
-        ? albumPhotos.favorites
-        : albumPhotos.all;
+    const {
+      album: { albumName, current },
+      albumPhotos: { all, recent, favorites, hidden },
+      location: { pathname },
+    } = this.props.globalProps;
 
+    let previewPhotos =
+      albumName === "RECENT"
+        ? recent
+        : albumName === "FAVORITES"
+        ? favorites
+        : albumName === "HIDDEN"
+        ? hidden
+        : all;
+
+    previewPhotos =
+      pathname === "/hidden"
+        ? previewPhotos
+        : previewPhotos.filter((photo) => !photo.hidden);
     const currentIndex: number = previewPhotos
       .map((p) => p.id)
-      .indexOf(album.current?.id as any);
+      .indexOf(current?.id as any);
     this.setState((s) => ({
       ...s,
       previewPhotos,

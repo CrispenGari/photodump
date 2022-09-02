@@ -24,8 +24,18 @@ class Album extends React.Component<PropsType, StateType> {
     } = this;
     return (
       <div className="album__item" title={title} onClick={onClick}>
-        <Icon className="album__item__icon" />
-        <Image className="album__item__cover" src={coverUrl} alt={title} />
+        {title.toLowerCase() !== "hidden" && (
+          <Icon className="album__item__icon" />
+        )}
+        {title.toLowerCase() === "hidden" ? (
+          <div className="album__item__hidden">
+            <Image className="album__item__cover" src={coverUrl} alt={title} />
+            <Icon className="album__item__icon" />
+          </div>
+        ) : (
+          <Image className="album__item__cover" src={coverUrl} alt={title} />
+        )}
+
         <h1>{title}</h1>
         <p>{itemsCount} item(s)</p>
       </div>
