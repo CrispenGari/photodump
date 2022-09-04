@@ -10,14 +10,14 @@ interface PropsType {
   globalProps: GlobalPropsType;
 }
 interface StateType {
-  blur: 1 | 0;
+  blur: string;
   loading: false | true;
-  hide: 1 | 0;
+  hide: string;
 }
 class HiddenItemsSettings extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props);
-    this.state = { loading: false, hide: 0, blur: 0 };
+    this.state = { loading: false, hide: "hide", blur: "blur" };
   }
 
   unsubscribe = () => {};
@@ -27,11 +27,14 @@ class HiddenItemsSettings extends React.Component<PropsType, StateType> {
       doc(db, "users", this.props.globalProps.user?.uid as any),
       async (querySnapshot) => {
         const settings = querySnapshot.data()?.settings as any;
-        console.log(settings);
         this.setState((state) => ({
           ...state,
-          blur: settings?.blurHiddenPhotos ?? 0,
-          hide: settings?.dontHideBlurInstead ?? 0,
+          blur: settings?.blurHiddenPhotos
+            ? settings?.blurHiddenPhotos
+            : "blur",
+          hide: settings?.dontHideBlurInstead
+            ? settings?.dontHideBlurInstead
+            : "hide",
         }));
       }
     );
@@ -43,19 +46,13 @@ class HiddenItemsSettings extends React.Component<PropsType, StateType> {
     };
   }
 
-  onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    if (name === "blur") {
-      this.setState((s) => ({
-        ...s,
-        blur: checked ? 1 : 0,
-      }));
-    } else if (name === "hide") {
-      this.setState((s) => ({
-        ...s,
-        hide: checked ? 1 : 0,
-      }));
-    }
+  onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    this.setState((s) => ({
+      ...s,
+      [name]: value,
+    }));
+
     return;
   };
 
@@ -71,6 +68,7 @@ class HiddenItemsSettings extends React.Component<PropsType, StateType> {
       ...s,
       loading: true,
     }));
+
     await setDoc(
       doc(db, "users", user?.uid as string),
       {
@@ -94,6 +92,7 @@ class HiddenItemsSettings extends React.Component<PropsType, StateType> {
       onChange,
       onSubmit,
     } = this;
+
     return (
       <Form
         className="hidden__item__setting"
@@ -103,8 +102,8 @@ class HiddenItemsSettings extends React.Component<PropsType, StateType> {
         <h1>Hidden Photos</h1>
         <Message success className="hidden__item__message">
           <p>
-            <b>Blur Hidden Photos</b> allows you to only see photos when you
-            open them in the <b>Hidden</b> photos album.
+            <b>Automatic Blur Hidden Photos</b> allows you to only see photos
+            when you open them in the <b>Hidden</b> photos album.
           </p>
           <p>
             <b>Don't Hide Blur Instead</b> allows you to show hidden photos in
@@ -112,26 +111,26 @@ class HiddenItemsSettings extends React.Component<PropsType, StateType> {
           </p>
         </Message>
         <div className="hidden__item__setting__inputs">
-          <label htmlFor="hidden-blur-0">
-            <input
-              value={blur}
-              type="checkbox"
-              onChange={onChange}
-              name="blur"
-              defaultChecked={!!blur}
-            />
-            Blur Hidden Photos
-          </label>
-          <label htmlFor="hide">
-            <input
-              type="checkbox"
-              onChange={onChange}
-              value={hide}
-              name="hide"
-              defaultChecked={!!hide}
-            />
-            Don't Hide Blur Instead
-          </label>
+          <label>Automatic Blur Hidden Photos</label>
+          <select
+            name="blur"
+            onChange={onChange}
+            value={blur}
+            className="hidden__item__setting__inputs__select"
+          >
+            <option value="blur">BLUR</option>
+            <option value="dont-blur">DON'T BLUR</option>
+          </select>
+          <label>Don't Hide Blur Instead</label>
+          <select
+            value={hide}
+            name="hide"
+            onChange={onChange}
+            className="hidden__item__setting__inputs__select"
+          >
+            <option value="hide">HIDE</option>
+            <option value="show">BLUR DON'T HIDE</option>
+          </select>
         </div>
         <Button primary type="submit" fluid>
           Update

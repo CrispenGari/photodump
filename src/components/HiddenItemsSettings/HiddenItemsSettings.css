@@ -49,3 +49,12 @@
   width: fit-content !important;
   margin-top: 10px !important;
 }
+
+.hidden__item__setting__inputs__select {
+  width: 200px !important;
+  padding: 5px !important;
+  outline: none;
+}
+.hidden__item__setting__inputs > label {
+  margin-top: 5px;
+}
