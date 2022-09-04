@@ -9,6 +9,7 @@ import { ErrorType, GlobalPropsType } from "../../../types";
 import { pick } from "lodash";
 import "./SignUp.css";
 import { AuthFooter } from "../../../components";
+import { isValidPassword } from "@crispengari/regex-validator/lib";
 interface PropsType {
   globalProps: GlobalPropsType;
 }
@@ -56,62 +57,76 @@ class SignUp extends React.Component<PropsType, StateType> {
       }));
     }
 
-    await createUserWithEmailAndPassword(
-      auth,
-      email ? email.trim().toLowerCase() : "",
-      password ? password.trim() : ""
-    )
-      .then(async ({ user }) => {
-        this.setState((state) => ({
-          ...state,
-          password: "",
-          email: "",
-          confPassword: "",
-          error: undefined,
-          loading: false,
-        }));
-        const _user = pick(user, [
-          "displayName",
-          "email",
-          "phoneNumber",
-          "emailVerified",
-          "photoURL",
-          "uid",
-        ]);
-        await setDoc(
-          doc(db, "users", _user.uid),
-          {
-            user: _user,
-            photos: [],
-            settings: {
-              recentLimit: 10,
+    if (isValidPassword(password ?? "")) {
+      await createUserWithEmailAndPassword(
+        auth,
+        email ? email.trim().toLowerCase() : "",
+        password ? password.trim() : ""
+      )
+        .then(async ({ user }) => {
+          this.setState((state) => ({
+            ...state,
+            password: "",
+            email: "",
+            confPassword: "",
+            error: undefined,
+            loading: false,
+          }));
+          const _user = pick(user, [
+            "displayName",
+            "email",
+            "phoneNumber",
+            "emailVerified",
+            "photoURL",
+            "uid",
+          ]);
+          await setDoc(
+            doc(db, "users", _user.uid),
+            {
+              user: _user,
+              photos: [],
+              settings: {
+                recentLimit: 10,
+              },
             },
-          },
-          {
-            merge: true,
-          }
-        )
-          .then(() => {
-            this.props.globalProps.navigate("/");
-          })
-          .catch((err) => console.log(err));
-      })
-      .catch((error) => {
-        this.setState((state) => ({
-          ...state,
-          password: "",
-          confPassword: "",
-          loading: false,
-          error: {
-            field: (error.message as string).includes("email")
-              ? "email"
-              : "password",
-            value: (error.message as string).includes("email")
-              ? "The email address is invalid or it has already been taken."
-              : "The password must contain at least 6 characters.",
-          },
-        }));
-      });
+            {
+              merge: true,
+            }
+          )
+            .then(() => {
+              this.props.globalProps.navigate("/");
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((error) => {
+          this.setState((state) => ({
+            ...state,
+            password: "",
+            confPassword: "",
+            loading: false,
+            error: {
+              field: (error.message as string).includes("email")
+                ? "email"
+                : "password",
+              value: (error.message as string).includes("email")
+                ? "The email address is invalid or it has already been taken."
+                : "The password must contain at least 6 characters.",
+            },
+          }));
+        });
+    } else {
+      this.setState((state) => ({
+        ...state,
+        password: "",
+        confPassword: "",
+        loading: false,
+        error: {
+          field: "password",
+          value:
+            "password must have minimum eight characters, at least one letter and one number",
+        },
+      }));
+    }
   };
   onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;

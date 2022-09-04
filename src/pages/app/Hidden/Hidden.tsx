@@ -17,12 +17,14 @@ interface PropsType {
 }
 interface StateType {
   hidden: Array<PhotoType>;
+  blur: boolean;
 }
 class Hidden extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props);
     this.state = {
       hidden: [],
+      blur: false,
     };
   }
   unsubscribe = () => {};
@@ -35,12 +37,15 @@ class Hidden extends React.Component<PropsType, StateType> {
       doc(db, "users", this.props.globalProps.user?.uid as any),
       async (querySnapshot) => {
         const photos = querySnapshot.data()?.photos as any;
+        const settings = querySnapshot.data()?.settings as any;
+
         const hidden: Array<PhotoType> = photos.filter(
           (photo: PhotoType) => photo.hidden
         );
         this.setState((state) => ({
           ...state,
           hidden,
+          blur: settings?.blurHiddenPhotos === "blur",
         }));
       }
     );
@@ -55,7 +60,7 @@ class Hidden extends React.Component<PropsType, StateType> {
   }
   render() {
     const {
-      state: { hidden },
+      state: { hidden, blur },
       props: {
         globalProps: { album, openHiddenPhotos },
       },
@@ -76,7 +81,11 @@ class Hidden extends React.Component<PropsType, StateType> {
           </h1>
           <div className="hidden__main__photos">
             {hidden.map((photo) => (
-              <Photo key={photo?.id} photo={photo} blur={openHiddenPhotos} />
+              <Photo
+                key={photo?.id}
+                photo={photo}
+                blur={openHiddenPhotos || blur}
+              />
             ))}
           </div>
         </div>

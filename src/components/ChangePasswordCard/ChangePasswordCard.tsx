@@ -9,6 +9,8 @@ import { auth } from "../../firebase";
 import { withGlobalProps } from "../../hoc";
 import { ErrorType, GlobalPropsType } from "../../types";
 import "./ChangePasswordCard.css";
+
+import { isValidPassword } from "@crispengari/regex-validator";
 interface PropsType {
   globalProps: GlobalPropsType;
 }
@@ -62,22 +64,32 @@ class ChangePasswordCard extends React.Component<PropsType, StateType> {
       await reauthenticateWithCredential(auth.currentUser, credentials)
         .then(() => {
           console.log("The user has been re-authenticated");
-          try {
-            if (auth.currentUser)
-              updatePassword(auth.currentUser, password.trim());
-            else throw new Error("Failed to update password no user.");
-          } catch (error) {
-            console.log(error);
+
+          if (isValidPassword(password)) {
+            try {
+              if (auth.currentUser)
+                updatePassword(auth.currentUser, password.trim());
+              else throw new Error("Failed to update password no user.");
+            } catch (error) {
+              console.log(error);
+              this.setState((state) => ({
+                ...state,
+                error: {
+                  field: "confirmPassword",
+                  value: "error",
+                },
+              }));
+            }
+          } else {
             this.setState((state) => ({
               ...state,
               error: {
                 field: "confirmPassword",
-                value: "error",
+                value:
+                  "password must have minimum eight characters, at least one letter and one number",
               },
             }));
           }
-
-          console.log("Password updated");
           // await signOut(auth).finally(() => navigate("/"));
         })
         .catch((error) => {

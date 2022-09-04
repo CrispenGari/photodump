@@ -198,6 +198,7 @@ class Photo extends React.Component<PropsType, StateType> {
             <div />
           </div>
         ) : null}
+        {blur ? <FaRegEyeSlash className="photo__icon__blur" /> : null}
         <img
           src={url}
           alt="placeholder"

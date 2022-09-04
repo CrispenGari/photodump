@@ -11,11 +11,12 @@ interface PropsType {
 }
 interface StateType {
   all: Array<PhotoType>;
+  dontHideBlurInstead: boolean;
 }
 class All extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props);
-    this.state = { all: [] };
+    this.state = { all: [], dontHideBlurInstead: false };
   }
   unsubscribe = () => {};
 
@@ -24,9 +25,12 @@ class All extends React.Component<PropsType, StateType> {
       doc(db, "users", this.props.globalProps.user?.uid as any),
       async (querySnapshot) => {
         const photos = querySnapshot.data()?.photos as any;
+        const settings = querySnapshot.data()?.settings as any;
+        console.log(settings);
         this.setState((state) => ({
           ...state,
           all: photos,
+          dontHideBlurInstead: settings?.dontHideBlurInstead === "hide",
         }));
       }
     );
@@ -39,7 +43,7 @@ class All extends React.Component<PropsType, StateType> {
   }
   render() {
     const {
-      state: { all },
+      state: { all, dontHideBlurInstead },
       props: {
         globalProps: { album },
       },
@@ -60,9 +64,12 @@ class All extends React.Component<PropsType, StateType> {
           </h1>
           <div className="all__main__photos">
             {all
-              .filter((p) => !p.hidden)
+              .filter((p) => {
+                if (dontHideBlurInstead) return !p.hidden;
+                else return p;
+              })
               .map((photo) => (
-                <Photo key={photo.id} photo={photo} />
+                <Photo key={photo.id} photo={photo} blur={photo?.hidden} />
               ))}
           </div>
         </div>

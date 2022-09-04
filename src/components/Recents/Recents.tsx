@@ -27,10 +27,16 @@ class Recents extends React.Component<PropsType, StateType> {
     this.unsubscribe = onSnapshot(
       doc(db, "users", this.props.globalProps.user?.uid as any),
       async (querySnapshot) => {
-        const limit = querySnapshot.data()?.settings?.recentLimit || 10;
+        const settings = querySnapshot.data()?.settings as any;
+        const limit: number = settings?.recentLimit || 10;
+        const dontHideBlurInstead: boolean =
+          settings?.dontHideBlurInstead === "hide";
         const photos = querySnapshot
           .data()
-          ?.photos?.filter((photo: PhotoType) => !photo.hidden)
+          ?.photos?.filter((p: PhotoType) => {
+            if (dontHideBlurInstead) return !p.hidden;
+            else return p;
+          })
           ?.slice(0, limit);
         dispatch(
           setAlbumPhotos({
@@ -59,7 +65,9 @@ class Recents extends React.Component<PropsType, StateType> {
         <h1>Recent</h1>
         <div className="recents__container">
           {photos.length > 0
-            ? photos.map((photo) => <Photo key={photo.id} photo={photo} />)
+            ? photos.map((photo) => (
+                <Photo key={photo.id} photo={photo} blur={photo.hidden} />
+              ))
             : null}
         </div>
       </div>

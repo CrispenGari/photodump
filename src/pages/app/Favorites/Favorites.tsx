@@ -11,11 +11,12 @@ interface PropsType {
 }
 interface StateType {
   favorites: Array<PhotoType>;
+  dontHideBlurInstead: boolean;
 }
 class Favorites extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props);
-    this.state = { favorites: [] };
+    this.state = { favorites: [], dontHideBlurInstead: false };
   }
 
   unsubscribe = () => {};
@@ -27,9 +28,11 @@ class Favorites extends React.Component<PropsType, StateType> {
       async (querySnapshot) => {
         const photos = querySnapshot.data()?.photos as any;
         const favorites = photos?.filter((photo: PhotoType) => photo.favoured);
+        const settings = querySnapshot.data()?.settings as any;
         this.setState((state) => ({
           ...state,
           favorites,
+          dontHideBlurInstead: settings?.dontHideBlurInstead === "hide",
         }));
       }
     );
@@ -42,7 +45,7 @@ class Favorites extends React.Component<PropsType, StateType> {
   }
   render() {
     const {
-      state: { favorites },
+      state: { favorites, dontHideBlurInstead },
       props: {
         globalProps: { album },
       },
@@ -63,9 +66,12 @@ class Favorites extends React.Component<PropsType, StateType> {
           </h1>
           <div className="favorites__main__photos">
             {favorites
-              .filter((p) => !p.hidden)
+              .filter((p) => {
+                if (dontHideBlurInstead) return !p.hidden;
+                else return p;
+              })
               .map((photo) => (
-                <Photo key={photo.id} photo={photo} />
+                <Photo key={photo.id} photo={photo} blur={photo?.hidden} />
               ))}
           </div>
         </div>
