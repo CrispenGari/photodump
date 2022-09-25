@@ -233,37 +233,43 @@ class Photo extends React.Component<PropsType, StateType> {
           <BiPhotoAlbum className="photo__icon" />
         )}
         <ImHistory className="photo__icon--down" />
-        <div className="photo__controls">
-          {favoured ? (
-            <IconButton
-              Icon={AiFillHeart}
-              title="unfavorite"
-              onClick={handleUnFavorite}
-            />
-          ) : (
-            <IconButton
-              Icon={AiOutlineHeart}
-              title="favorite"
-              onClick={handleFavorite}
-            />
-          )}
-          <IconButton Icon={MdDelete} title="delete" onClick={handleDelete} />
-          {!hidden ? (
-            <IconButton Icon={FaRegEye} title="un hide" onClick={handleHide} />
-          ) : (
-            <IconButton
-              Icon={FaRegEyeSlash}
-              title="hide"
-              onClick={handleUnHide}
-            />
-          )}
+        {location?.pathname !== "/hidden" && hidden ? null : (
+          <div className="photo__controls">
+            {favoured ? (
+              <IconButton
+                Icon={AiFillHeart}
+                title="unfavorite"
+                onClick={handleUnFavorite}
+              />
+            ) : (
+              <IconButton
+                Icon={AiOutlineHeart}
+                title="favorite"
+                onClick={handleFavorite}
+              />
+            )}
+            <IconButton Icon={MdDelete} title="delete" onClick={handleDelete} />
+            {!hidden ? (
+              <IconButton
+                Icon={FaRegEye}
+                title="un hide"
+                onClick={handleHide}
+              />
+            ) : (
+              <IconButton
+                Icon={FaRegEyeSlash}
+                title="hide"
+                onClick={handleUnHide}
+              />
+            )}
 
-          <IconButton
-            Icon={IoCloudDownload}
-            title="download"
-            onClick={handleDownload}
-          />
-        </div>
+            <IconButton
+              Icon={IoCloudDownload}
+              title="download"
+              onClick={handleDownload}
+            />
+          </div>
+        )}
         <div className="photo__info">
           <h1>{id.substring(0, 10)}</h1>
           <p>
