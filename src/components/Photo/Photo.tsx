@@ -15,6 +15,7 @@ import { withGlobalProps } from "../../hoc";
 import { db, storage } from "../../firebase";
 import { deleteObject, ref } from "firebase/storage";
 import { setAlbum } from "../../actions";
+import { Blurhash } from "react-blurhash";
 
 interface PropsType {
   photo: PhotoType;
@@ -23,13 +24,15 @@ interface PropsType {
 }
 interface StateType {
   loading: true | false;
+  imageLoaded: boolean;
 }
 class Photo extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props);
-    this.state = { loading: false };
+    this.state = { loading: false, imageLoaded: false };
   }
   handleFavorite = async () => {
+    if (!this.state.imageLoaded) return;
     const {
       props: {
         globalProps: { user },
@@ -58,6 +61,7 @@ class Photo extends React.Component<PropsType, StateType> {
     });
   };
   handleUnFavorite = async () => {
+    if (!this.state.imageLoaded) return;
     const {
       props: {
         globalProps: { user },
@@ -86,6 +90,7 @@ class Photo extends React.Component<PropsType, StateType> {
     });
   };
   handleDelete = async () => {
+    if (!this.state.imageLoaded) return;
     const {
       props: {
         globalProps: { user },
@@ -117,10 +122,12 @@ class Photo extends React.Component<PropsType, StateType> {
   };
 
   handleDownload = async () => {
+    if (!this.state.imageLoaded) return;
     const { url, name, id } = this.props.photo;
     await downloadImage(url, name || id.substring(0, 10) + ".jpg");
   };
   handleHide = async () => {
+    if (!this.state.imageLoaded) return;
     const {
       props: {
         globalProps: { user },
@@ -149,6 +156,7 @@ class Photo extends React.Component<PropsType, StateType> {
     });
   };
   handleUnHide = async () => {
+    if (!this.state.imageLoaded) return;
     const {
       props: {
         globalProps: { user },
@@ -176,6 +184,10 @@ class Photo extends React.Component<PropsType, StateType> {
       this.setState((s) => ({ ...s, loading: false }));
     });
   };
+
+  onImageLoaded = () => {
+    this.setState((state) => ({ ...state, imageLoaded: true }));
+  };
   render() {
     const {
       props: {
@@ -183,7 +195,8 @@ class Photo extends React.Component<PropsType, StateType> {
         globalProps: { dispatch, location },
         blur,
       },
-      state: { loading },
+      state: { loading, imageLoaded },
+      onImageLoaded,
       handleDelete,
       handleDownload,
       handleFavorite,
@@ -199,14 +212,29 @@ class Photo extends React.Component<PropsType, StateType> {
           </div>
         ) : null}
         {blur ? <FaRegEyeSlash className="photo__icon__blur" /> : null}
+
+        <Blurhash
+          hash="LEHV6nWB2yk8pyo0adR*.7kCMdnj"
+          className="photo__blur__hash"
+          resolutionX={32}
+          resolutionY={32}
+          punch={1}
+          style={{
+            display: imageLoaded ? "none" : "flex",
+          }}
+        />
+
         <img
           src={url}
           alt="placeholder"
+          onLoad={onImageLoaded}
           style={{
             filter: `${blur ? "blur(10px)" : "blur(0)"}`,
+            display: !imageLoaded ? "none" : "flex",
           }}
           loading="lazy"
           onClick={() => {
+            if (!imageLoaded) return;
             const alb: AlbumType = {
               albumName:
                 location?.pathname === "/favorites"
@@ -227,6 +255,7 @@ class Photo extends React.Component<PropsType, StateType> {
             dispatch(setAlbum(alb));
           }}
         />
+
         {favoured ? (
           <MdOutlineFavorite className="photo__icon" />
         ) : (

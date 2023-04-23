@@ -10,6 +10,7 @@ import { withGlobalProps } from "../../hoc";
 import { ErrorType, GlobalPropsType, PhotoType, UserType } from "../../types";
 import { getBase64, validatePhoneNumber } from "../../utils";
 import "./ProfileCard.css";
+import { Blurhash } from "react-blurhash";
 interface PropsType {
   globalProps: GlobalPropsType;
   readonly: boolean;
@@ -27,6 +28,7 @@ interface StateType {
   profileLoading?: boolean;
   profileImage?: string;
   phoneNumber?: string;
+  imageLoaded: boolean;
 }
 class ProfileCard extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
@@ -36,6 +38,7 @@ class ProfileCard extends React.Component<PropsType, StateType> {
       all: [],
       enableEdit: false,
       profileLoading: false,
+      imageLoaded: false,
     };
   }
   unsubscribe = () => {};
@@ -174,10 +177,15 @@ class ProfileCard extends React.Component<PropsType, StateType> {
       enableEdit: false,
     }));
   };
+
+  onImageLoaded = () => {
+    this.setState((state) => ({ ...state, imageLoaded: true }));
+  };
   render() {
     const {
       onChange,
       onSubmit,
+      onImageLoaded,
       state: {
         error,
         email,
@@ -190,6 +198,7 @@ class ProfileCard extends React.Component<PropsType, StateType> {
         user,
         profileLoading,
         phoneNumber,
+        imageLoaded,
       },
       selectBtnRef,
       updateProfilePicture,
@@ -199,7 +208,19 @@ class ProfileCard extends React.Component<PropsType, StateType> {
     return (
       <div className="profile__card">
         <Form className="profile__card__image" loading={profileLoading}>
+          <Blurhash
+            hash="LEHV6nWB2yk8pyo0adR*.7kCMdnj"
+            className="profile__card__image__blur__hash"
+            resolutionX={32}
+            resolutionY={32}
+            punch={1}
+            style={{
+              display: imageLoaded ? "none" : "flex",
+            }}
+          />
+
           <img
+            onLoad={onImageLoaded}
             src={profileImage ? profileImage : "/profile.jpg"}
             alt="profile"
             onClick={() => {
@@ -208,6 +229,9 @@ class ProfileCard extends React.Component<PropsType, StateType> {
               } else {
                 (selectBtnRef.current as any)?.click();
               }
+            }}
+            style={{
+              display: !imageLoaded ? "none" : "flex",
             }}
           />
           {readonly ? (

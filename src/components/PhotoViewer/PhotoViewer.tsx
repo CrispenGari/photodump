@@ -13,17 +13,19 @@ import { setAlbum } from "../../actions";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import { db, storage } from "../../firebase";
+import { Blurhash } from "react-blurhash";
 interface PropsType {
   globalProps: GlobalPropsType;
 }
 interface StateType {
   currentIndex: number;
   previewPhotos: Array<PhotoType>;
+  imageLoaded: boolean;
 }
 class PhotoViewer extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props);
-    this.state = { previewPhotos: [], currentIndex: 0 };
+    this.state = { previewPhotos: [], currentIndex: 0, imageLoaded: false };
   }
 
   handleKey = ({ key, code }: KeyboardEvent) => {
@@ -80,7 +82,7 @@ class PhotoViewer extends React.Component<PropsType, StateType> {
       state: { currentIndex, previewPhotos },
     } = this;
     const photo: PhotoType = previewPhotos[currentIndex];
-    console.log(photo.id);
+
     this.setState((s) => ({ ...s, loading: true }));
     const docSnap = await getDoc(doc(db, "users", user?.uid as any));
     const photos = docSnap.data()?.photos;
@@ -193,15 +195,19 @@ class PhotoViewer extends React.Component<PropsType, StateType> {
     };
     dispatch(setAlbum(alb));
   };
+
+  onImageLoad = () =>
+    this.setState((state) => ({ ...state, imageLoaded: true }));
   render() {
     const {
-      state: { currentIndex, previewPhotos },
+      state: { currentIndex, previewPhotos, imageLoaded },
       prev,
       next,
       handleDelete,
       handleDownload,
       handleFavorite,
       close,
+      onImageLoad,
       props: {
         globalProps: { album },
       },
@@ -228,19 +234,36 @@ class PhotoViewer extends React.Component<PropsType, StateType> {
           <IconButton
             title="previous"
             Icon={BiChevronLeft}
-            disabled={currentIndex === 0}
+            disabled={currentIndex === 0 || !imageLoaded}
             onClick={prev}
             classes="photo__viewer__icon__btn"
           />
           <IconButton
             title="next"
             onClick={next}
-            disabled={currentIndex + 1 === previewPhotos.length}
+            disabled={currentIndex + 1 === previewPhotos.length || !imageLoaded}
             Icon={BiChevronRight}
             classes="photo__viewer__icon__btn photo__viewer__icon__btn--next"
           />
           <div className="photo__viewer__body">
-            <img src={photo?.url} alt={photo?.name} />
+            <Blurhash
+              hash="LEHV6nWB2yk8pyo0adR*.7kCMdnj"
+              className="photo__viewer__body__blur__hash"
+              resolutionX={32}
+              resolutionY={32}
+              punch={1}
+              style={{
+                display: imageLoaded ? "none" : "flex",
+              }}
+            />
+            <img
+              src={photo?.url}
+              alt={photo?.name}
+              onLoad={onImageLoad}
+              style={{
+                display: imageLoaded ? "flex" : "none",
+              }}
+            />
           </div>
           <div className="photo__viewer__footer">
             <div className="photo__viewer__footer__info">

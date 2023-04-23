@@ -14,7 +14,8 @@
   cursor: pointer;
 }
 
-.photo > img {
+.photo > img,
+.photo__blur__hash {
   width: 100%;
   object-fit: cover !important;
   margin-bottom: 0px !important;
@@ -23,7 +24,10 @@
   -webkit-user-drag: none;
   user-zoom: none;
 }
-
+.photo__blur__hash {
+  border-radius: 5px !important;
+  width: 100% !important;
+}
 .photo__info > h1 {
   font-size: 0.8rem;
   text-transform: uppercase;

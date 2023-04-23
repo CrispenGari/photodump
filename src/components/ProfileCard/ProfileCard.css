@@ -19,7 +19,8 @@
   flex-direction: column;
   margin: 5px;
 }
-.profile__card__image > img {
+.profile__card__image > img,
+.profile__card__image__blur__hash {
   width: 200px;
   height: 200px;
   object-fit: cover;
@@ -28,6 +29,10 @@
   cursor: pointer;
   user-zoom: none;
   margin-bottom: 10px;
+}
+.profile__card__image__blur__hash {
+  width: 200px !important;
+  height: 200px !important;
 }
 
 .profile__card__info__inputs {

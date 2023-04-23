@@ -50,12 +50,17 @@
   align-items: center;
   height: 70%;
 }
-.photo__viewer__body > img {
+.photo__viewer__body > img,
+.photo__viewer__body__blur__hash {
   height: 100%;
   object-fit: contain;
   user-zoom: none;
   -webkit-user-drag: none;
   width: 100%;
+}
+.photo__viewer__body__blur__hash {
+  width: 100% !important;
+  height: 100% !important;
 }
 .photo__viewer__icon__btn {
   width: 35px !important;

@@ -26,7 +26,7 @@ class All extends React.Component<PropsType, StateType> {
       async (querySnapshot) => {
         const photos = querySnapshot.data()?.photos as any;
         const settings = querySnapshot.data()?.settings as any;
-        console.log(settings);
+
         this.setState((state) => ({
           ...state,
           all: photos,
