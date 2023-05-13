@@ -204,6 +204,7 @@ class Photo extends React.Component<PropsType, StateType> {
       handleHide,
       handleUnHide,
     } = this;
+
     return (
       <div className="photo">
         {loading ? (
@@ -223,18 +224,16 @@ class Photo extends React.Component<PropsType, StateType> {
             display: imageLoaded ? "none" : "flex",
           }}
         />
-
         <img
           src={url}
           alt="placeholder"
           onLoad={onImageLoaded}
           style={{
             filter: `${blur ? "blur(10px)" : "blur(0)"}`,
-            display: !imageLoaded ? "none" : "flex",
+            width: !imageLoaded ? "1%" : "100%",
           }}
           loading="lazy"
           onClick={() => {
-            if (!imageLoaded) return;
             const alb: AlbumType = {
               albumName:
                 location?.pathname === "/favorites"
